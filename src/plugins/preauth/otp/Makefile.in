@@ -1,0 +1,45 @@
+mydir=plugins$(S)preauth$(S)otp
+BUILDTOP=$(REL)..$(S)..$(S)..
+KRB5_RUN_ENV = @KRB5_RUN_ENV@
+KRB5_CONFIG_SETUP = KRB5_CONFIG=$(top_srcdir)/config-files/krb5.conf ; export KRB5_CONFIG ;
+PROG_LIBPATH=-L$(TOPLIBD)
+PROG_RPATH=$(KRB5_LIBDIR)
+MODULE_INSTALL_DIR = $(KRB5_PA_MODULE_DIR)
+DEFS=@DEFS@
+
+LOCALINCLUDES = -I../../../include/krb5 -I../../../include/
+
+LIBBASE=otp
+LIBMAJOR=0
+LIBMINOR=0
+SO_EXT=.so
+RELDIR=../plugins/preauth/otp
+# Depends on libk5crypto and libkrb5
+SHLIB_EXPDEPS = \
+	$(TOPLIBD)/libk5crypto$(SHLIBEXT) \
+	$(TOPLIBD)/libkrb5$(SHLIBEXT) \
+	$(TOPLIBD)/krad/libkrad$(SHLIBEXT)
+
+SHLIB_EXPLIBS= -lverto -lkrad $(KRB5_LIB) $(K5CRYPTO_LIB) $(COM_ERR_LIB) $(SUPPORT_LIB) $(LIBS)
+
+SHLIB_DIRS=-L$(TOPLIBD)
+SHLIB_RDIRS=$(KRB5_LIBDIR)
+STOBJLISTS=OBJS.ST
+STLIBOBJS = \
+	otp_state.o \
+	main.o
+
+SRCS = \
+	$(srcdir)/otp_state.c \
+	$(srcdir)/main.c
+
+all-unix:: $(LIBBASE)$(SO_EXT)
+install-unix:: install-libs
+clean-unix:: clean-libs clean-libobjs
+
+clean::
+	$(RM) lib$(LIBBASE)$(SO_EXT)
+
+@libnover_frag@
+@libobj_frag@
+
