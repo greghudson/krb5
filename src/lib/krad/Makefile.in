@@ -27,22 +27,10 @@ SRCS=attr.c attrset.c client.c code.c packet.c remote.c \
 
 STOBJLISTS=OBJS.ST
 
-KRAD_HDR=$(BUILDTOP)$(S)include$(S)krad.h
-
-includes:: $(KRAD_HDR)
-depend:: $(KRAD_HDR)
-all-unix:: all-liblinks includes
+all-unix:: all-liblinks
 install-unix:: install-libs
 
 clean-unix:: clean-liblinks clean-libs clean-libobjs
-	$(RM) $(KRAD_HDR)
-
-$(KRAD_HDR): $(srcdir)/krad.h
-	$(RM) $@
-	$(CP) $(srcdir)/krad.h $@
-
-install::
-	$(INSTALL_DATA) $(srcdir)/krad.h $(DESTDIR)$(KRB5_INCDIR)/krad.h
 
 check-unix:: t_attr t_attrset t_code t_packet t_remote t_client
 	$(RUN_SETUP) $(VALGRIND) ./t_attr
