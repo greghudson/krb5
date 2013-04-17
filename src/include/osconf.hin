@@ -63,10 +63,10 @@
 #define DEFAULT_KEYFILE_STUB    KDC_DIR "/.k5."
 #define KRB5_DEFAULT_ADMIN_ACL  KDC_DIR "/krb5_adm.acl"
 /* Used by old admin server */
-#define DEFAULT_ADMIN_ACL       KDC_DIR "/krb5kdc/kadm_old.acl"
+#define DEFAULT_ADMIN_ACL       KDC_DIR "/kadm_old.acl"
 
 /* Location of KDC profile */
-#define DEFAULT_KDC_PROFILE     KDC_DIR "/krb5kdc/kdc.conf"
+#define DEFAULT_KDC_PROFILE     KDC_DIR "/kdc.conf"
 #define KDC_PROFILE_ENV         "KRB5_KDC_PROFILE"
 
 #if TARGET_OS_MAC
