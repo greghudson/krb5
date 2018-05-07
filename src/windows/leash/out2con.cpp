@@ -84,21 +84,13 @@ ConsoleEcho::ConsoleEcho()
     AllocConsole();
     // create pipe
     CreatePipe(&m_hReadPipe, &m_hWritePipe, NULL, 0);
-    // save original stdout to preserve commandline-specified redirection
-    m_stdoutfd = _fileno(stdout);
-    // and copy the whole damn FILE structure so we can restore it
-    // when we're done.  I don't know any other way to restore the
-    // crazy windows gui default '-2' filedesc stdout.
-    m_originalStdout = *stdout;
-    // hook up the write end of our pipe to stdout
+    // save a duplicate of the original stdout to preserve commandline-specified redirection
+    m_stdoutfd = _dup(_fileno(stdout));
+    // write any buffered stdout data to its current file descriptor
+    fflush(stdout);
+    // replace stdout's file descriptor with the write end of our pipe.
     m_pipefd = _open_osfhandle((intptr_t)m_hWritePipe, 0);
-    // take our os file handle and allocate a crt FILE for it
-    FILE* fp = _fdopen(m_pipefd, "w");
-    // copy to stdout
-    *stdout = *fp;
-    // now slam the allocated FILE's _flag to zero to mark it as free without
-    // actually closing the os file handle and pipe
-    fp->_flag = 0;
+    (void)_dup2(m_pipefd, _fileno(stdout));
 
     // disable buffering
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -110,13 +102,11 @@ ConsoleEcho::ConsoleEcho()
 
 ConsoleEcho::~ConsoleEcho()
 {
-    // fclose() unfortunately immediately invalidates the read pipe before the
-    // pipe thread has a chance to flush it, so don't do that.
-    //fclose(stdout);
-
-    // instead, just slam the original stdout
-    *stdout = m_originalStdout;
-    //printf("Safe to printf now and no longer echoed to console.\n");
+    // write any buffered stdout data to the pipe
+    fflush(stdout);
+    // replace stdout's file descriptor with the old one and close our copy.
+    (void)_dup2(m_stdoutfd, _fileno(stdout));
+    _close(m_stdoutfd);
     // Close write pipe
     _close(m_pipefd);
     // and wait here for pipe thread to exit
