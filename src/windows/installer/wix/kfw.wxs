@@ -41,7 +41,7 @@
     
         <!-- The weird package code results in a new one being generated each time we compile -->
         <Package 
-            Id="????????-????-????-????-????????????"
+            Id="*"
             Keywords="Installer,MSI,Database"
             Description="$(var.ProductName)"
             Comments="$(var.ProductFullName)"
@@ -50,7 +50,7 @@
             Languages="$(var.Language)"
             Compressed="yes"
             SummaryCodepage="$(var.CodePage)"
-            Platforms="$(var.Platform)" 
+            Platform="$(var.Platform)"
             />
         
         <?include lang\ui_$(var.BuildLang).wxi?>

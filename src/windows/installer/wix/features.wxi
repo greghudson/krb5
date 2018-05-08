@@ -148,7 +148,7 @@
             Level="130" 
             Title="!(loc.KerberosSDKTitle)">
             
-        <?if $(var.Platform) = "Intel" ?>
+        <?if $(var.Platform) = "x86" ?>
             <ComponentRef Id="cmp_dirlib_i386" />
         <?else?>
             <ComponentRef Id="cmp_dirlib_amd64" />
@@ -173,7 +173,7 @@
             Level="30" 
             Title="!(loc.KerberosDocTitle)">
 
-<!--            <?if $(var.Platform) = "Intel"?>
+<!--            <?if $(var.Platform) = "x86"?>
                     <ComponentRef Id="efl_leash_userdoc_pdf" />
             <?endif?> -->
             

@@ -30,7 +30,7 @@
     <?if $(var.Platform) = "x64" ?>
         <?define BaseProductName="!(loc.ProductName64)"?>
         <?define BaseProductNameShort="!(loc.ProductNameShort64)"?>
-    <?elseif $(var.Platform) = "Intel" ?>
+    <?elseif $(var.Platform) = "x86" ?>
         <?define BaseProductName="!(loc.ProductName)"?>
         <?define BaseProductNameShort="!(loc.ProductNameShort)"?>
     <?else?>
