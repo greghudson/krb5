@@ -68,6 +68,8 @@
  * second-factor record corresponding to the factor type chosen by the client.
  */
 
+#ifndef _WIN32
+
 /* From a k5input structure representing the remainder of a secure cookie
  * plaintext, parse a four-byte length and data. */
 static void
@@ -589,3 +591,5 @@ kdcpreauth_spake_initvt(krb5_context context, int maj_ver, int min_ver,
     vt->free_modreq = spake_free_modreq;
     return 0;
 }
+
+#endif /* not _WIN32 */
