@@ -247,7 +247,7 @@ C_RULE=$(C_RULE_STUFF) $<
 {}.c{$(OUTPRE)}.obj:
 	@if "%DO_C_RULE_PRINT%"=="1" echo %C_RULE_PRINT% ...
 	@set DO_C_RULE_PRINT=
-	@$(C_RULE)
+	$(C_RULE)
 
 {}.cxx{$(OUTPRE)}.obj:
 	@if "%DO_C_RULE_PRINT%"=="1" echo %C_RULE_PRINT% ...

@@ -13,6 +13,14 @@ RELDIR=../plugins/preauth/spake
 SHLIB_EXPDEPS=$(KRB5_BASE_DEPLIBS)
 SHLIB_EXPLIBS=$(KRB5_BASE_LIBS) $(SPAKE_OPENSSL_LIBS)
 
+DLL_NAME=spake32
+DEF_FILE=spake.def
+!if ("$(CPU)" == "IA64") || ("$(CPU)" == "AMD64") || ("$(CPU)" == "ALPHA64")
+DLL_NAME=spake64
+!endif
+WINDLLFLAGS = /nologo /dll /incremental:no /release
+WINLIBS = $(SLIB) $(KLIB) $(CLIB)
+
 STLIBOBJS=util.o iana.o groups.o openssl.o edwards25519.o \
 	spake_client.o spake_kdc.o
 
@@ -25,6 +33,14 @@ SRCS= \
 	$(srcdir)/spake_client.c \
 	$(srcdir)/spake_kdc.c
 
+OBJS=	$(OUTPRE)util.$(OBJEXT) \
+	$(OUTPRE)iana.$(OBJEXT) \
+	$(OUTPRE)groups.$(OBJEXT) \
+	$(OUTPRE)openssl.$(OBJEXT) \
+	$(OUTPRE)edwards25519.$(OBJEXT) \
+	$(OUTPRE)spake_client.$(OBJEXT) \
+	$(OUTPRE)spake_kdc.$(OBJEXT)
+
 t_vectors: t_vectors.o $(STLIBOBJS) $(SHLIB_EXPDEPS)
 	$(CC_LINK) -o $@ t_vectors.o $(STLIBOBJS) $(SHLIB_EXPLIBS)
 
@@ -34,6 +50,13 @@ clean-unix:: clean-liblinks clean-libs clean-libobjs
 
 check-unix: t_vectors
 	$(RUN_TEST_LOCAL_CONF) ./t_vectors
+
+all-windows: $(OUTPRE)$(DLL_NAME).dll
+clean-windows::
+	$(RM) $(OUTPRE)$(DLL_NAME).dll
+
+$(OUTPRE)$(DLL_NAME).dll: $(DEF_FILE) $(OBJS)
+	link $(WINDLLFLAGS) -def:$(DEF_FILE) -out:$*.dll $(OBJS) $(WINLIBS)
 
 @libnover_frag@
 @libobj_frag@
