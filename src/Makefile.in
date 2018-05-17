@@ -489,8 +489,8 @@ install-windows:
 	$(INSTALLDBGSYMS) clients\kdeltkt\$(OUTPRE)kdeltkt.pdb "$(KRB_INSTALL_DIR)\bin\."
 	$(INSTALLDBGSYMS) clients\kpasswd\$(OUTPRE)kpasswd.pdb "$(KRB_INSTALL_DIR)\bin\."
 	$(INSTALLDBGSYMS) clients\kswitch\$(OUTPRE)kswitch.pdb "$(KRB_INSTALL_DIR)\bin\."
-	copy plugins\preauth\spake\$(OUTPRE)*.dll "$(KRB_INSTALL_DIR)\bin\plugins\preauth\."
-#	$(INSTALLDBGSYMS) plugins\preauth\spake\$(OUTPRE)*.pdb "$(KRB_INSTALL_DIR)\bin\plugins\."
+	copy plugins\preauth\spake\$(OUTPRE)$(SPAKELIB).dll "$(KRB_INSTALL_DIR)\bin\plugins\preauth\."
+	$(INSTALLDBGSYMS) plugins\preauth\spake\$(OUTPRE)$(SPAKELIB).pdb "$(KRB_INSTALL_DIR)\bin\plugins\preauth\."
 
 check-prerecurse: runenv.py
 	$(RM) $(SKIPTESTS)

@@ -13,12 +13,6 @@ RELDIR=../plugins/preauth/spake
 SHLIB_EXPDEPS=$(KRB5_BASE_DEPLIBS)
 SHLIB_EXPLIBS=$(KRB5_BASE_LIBS) $(SPAKE_OPENSSL_LIBS)
 
-DLL_NAME=spake32
-DEF_FILE=spake.def
-!if ("$(CPU)" == "IA64") || ("$(CPU)" == "AMD64") || ("$(CPU)" == "ALPHA64")
-DLL_NAME=spake64
-!endif
-WINDLLFLAGS = /nologo /dll /incremental:no /release
 WINLIBS = $(SLIB) $(KLIB) $(CLIB)
 
 STLIBOBJS=util.o iana.o groups.o openssl.o edwards25519.o \
@@ -51,12 +45,12 @@ clean-unix:: clean-liblinks clean-libs clean-libobjs
 check-unix: t_vectors
 	$(RUN_TEST_LOCAL_CONF) ./t_vectors
 
-all-windows: $(OUTPRE)$(DLL_NAME).dll
+all-windows: $(OUTPRE)$(SPAKELIB).dll
 clean-windows::
-	$(RM) $(OUTPRE)$(DLL_NAME).dll
+	$(RM) $(OUTPRE)$(SPAKELIB).dll
 
-$(OUTPRE)$(DLL_NAME).dll: $(DEF_FILE) $(OBJS)
-	link $(WINDLLFLAGS) -def:$(DEF_FILE) -out:$*.dll $(OBJS) $(WINLIBS)
+$(OUTPRE)$(SPAKELIB).dll: spake.def $(OBJS)
+	link /dll $(LOPTS) -def:spake.def -out:$*.dll $(OBJS) $(WINLIBS)
 
 @libnover_frag@
 @libobj_frag@
