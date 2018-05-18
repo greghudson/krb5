@@ -5,15 +5,14 @@ build_script:
   - set KRB_INSTALL_DIR=C:\kfw
   - cd %APPVEYOR_BUILD_FOLDER%\src
   - set PATH=%PATH%;%wix%bin
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat" x86
   - set NO_LEASH=1
   - set
   - nmake -f Makefile.in prep-windows
   - nmake
   - nmake install
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat" amd64
   - set
   - nmake clean
   - nmake
   - nmake install
-  - rename kfw.msi kfw64.msi
