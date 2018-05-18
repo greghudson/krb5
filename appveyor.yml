@@ -1,11 +1,11 @@
-image: Visual Studio 2017
+image: Visual Studio 2015
 
 build_script:
   - mkdir C:\kfw
   - set KRB_INSTALL_DIR=C:\kfw
   - cd %APPVEYOR_BUILD_FOLDER%\src
   - set PATH=%PATH%;%wix%bin
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
   - set CPU=i386
   - set
   - nmake -f Makefile.in prep-windows
@@ -15,7 +15,7 @@ build_script:
   - nmake
   - rename kfw.msi kfw32.msi
   - cd ..\..\..
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
   - set CPU=AMD64
   - set
   - nmake clean
