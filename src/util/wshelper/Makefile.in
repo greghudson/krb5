@@ -1,14 +1,7 @@
 BUILDTOP=..\..
 
-DLL_NAME=wshelp32
-DEF_FILE=wshelp32.def
-
-# Use 64-bit DLL_NAME and DEF_FILE on 64-bit platforms
-!if ("$(CPU)" == "IA64") || ("$(CPU)" == "AMD64") || ("$(CPU)" == "ALPHA64")
-DLL_NAME=wshelp64
-DEF_FILE=wshelp64.def
-!endif
-
+DLL_NAME=wshelp$(BITS)
+DEF_FILE=wshelp$(BITS).def
 
 OBJS=	$(OUTPRE)dllmain.$(OBJEXT) \
 	$(OUTPRE)gethna.$(OBJEXT) \

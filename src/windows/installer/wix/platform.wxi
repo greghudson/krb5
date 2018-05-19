@@ -18,7 +18,7 @@
   <?define cmf_wshelp32_dll_name="wshelp32.dll"?>
   <?define cmf_xpprof32_dll_guid="A7DF8BAF-7188-4C24-89FB-C8EB51571FD2"?>
   <?define cmf_xpprof32_dll_name="xpprof32.dll"?>
-  <?if $(var.Platform) = "x64" ?>
+  <?if $(sys.BUILDARCH) = "x64" ?>
         <?define UpgradeCode="6DA9CD86-6028-4852-8C94-452CAC229244"?>
         <?define PISystemFolder="System64Folder"?>
         <?define PIProgramFilesFolder="ProgramFiles64Folder"?>
@@ -103,7 +103,7 @@
         <?define cmf_krb5cred_en_us_dll_guid="223B7E9D-290F-40b8-89B3-F8337A8E082D"?>
         <?define cmf_krb5cred_en_us_dll_name="krb5cred_en_us.dll"?>
         <?define cmf_bin_debug_guid="F3432C85-89D9-4bd6-BD82-4ED49A118338"?>
-<?elseif $(var.Platform) = "Intel"?>
+<?elseif $(sys.BUILDARCH) = "x86"?>
         <?define UpgradeCode="61211594-AAA1-4A98-A299-757326763CC7"?>
         <?define PISystemFolder="SystemFolder"?>
         <?define PIProgramFilesFolder="ProgramFilesFolder"?>
