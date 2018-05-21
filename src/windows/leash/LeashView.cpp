@@ -24,9 +24,6 @@
 #include "LeashDebugWindow.h"
 #include "LeashMessageBox.h"
 #include "LeashAboutBox.h"
-#include "Krb5Properties.h"
-#include "LeashProperties.h"
-#include "KrbProperties.h"
 #include <krb5.h>
 
 #ifdef _DEBUG
@@ -83,17 +80,13 @@ BEGIN_MESSAGE_MAP(CLeashView, CListView)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_UPDATE_COMMAND_UI(ID_DEBUG_MODE, OnUpdateDebugMode)
 	ON_UPDATE_COMMAND_UI(ID_CFG_FILES, OnUpdateCfgFiles)
-	ON_COMMAND(ID_KRB5_PROPERTIES, OnKrb5Properties)
-	ON_COMMAND(ID_LEASH_PROPERTIES, OnLeashProperties)
     ON_COMMAND(ID_LEASH_RESTORE, OnLeashRestore)
     ON_COMMAND(ID_LEASH_MINIMIZE, OnLeashMinimize)
 	ON_COMMAND(ID_LOW_TICKET_ALARM, OnLowTicketAlarm)
 	ON_COMMAND(ID_AUTO_RENEW, OnAutoRenew)
 	ON_UPDATE_COMMAND_UI(ID_LOW_TICKET_ALARM, OnUpdateLowTicketAlarm)
 	ON_UPDATE_COMMAND_UI(ID_AUTO_RENEW, OnUpdateAutoRenew)
-	ON_UPDATE_COMMAND_UI(ID_KRB5_PROPERTIES, OnUpdateKrb5Properties)
 	ON_UPDATE_COMMAND_UI(ID_MAKE_DEFAULT, OnUpdateMakeDefault)
-	ON_COMMAND(ID_PROPERTIES, OnKrbProperties)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES, OnUpdateProperties)
 	ON_COMMAND(ID_HELP_KERBEROS_, OnHelpKerberos)
 	ON_COMMAND(ID_HELP_LEASH32, OnHelpLeash32)
@@ -1517,9 +1510,6 @@ VOID CLeashView::OnActivateView(BOOL bActivate, CView* pActivateView,
 
     m_alreadyPlayed = TRUE;
 
-    if (!CKrbProperties::KrbPropertiesOn)
-        SendMessage(WM_COMMAND, ID_UPDATE_DISPLAY, 0);
-
     if (m_debugStartUp)
     {
         OnDebugMode();
@@ -2024,24 +2014,6 @@ VOID CLeashView::OnUpdateCfgFiles(CCmdUI* pCmdUI)
         pCmdUI->Enable(FALSE);
 }
 
-VOID CLeashView::OnLeashProperties()
-{
-    CLeashProperties leashProperties;
-    leashProperties.DoModal();
-}
-
-VOID CLeashView::OnKrbProperties()
-{
-    CKrbProperties krbProperties("Kerberos Properties");
-    krbProperties.DoModal();
-}
-
-VOID CLeashView::OnKrb5Properties()
-{
-    CKrb5Properties krb5Properties("Kerberos Five Properties");
-    krb5Properties.DoModal();
-}
-
 /*
 void CLeashView::GetRowWidthHeight(CDC* pDC, LPCSTR theString, int& nRowWidth,
                                    int& nRowHeight, int& nCharWidth)
@@ -2424,14 +2396,6 @@ VOID CLeashView::AlarmBeep()
 }
 
 VOID CLeashView::OnUpdateProperties(CCmdUI* pCmdUI)
-{
-    if (CLeashApp::m_hKrb5DLL)
-        pCmdUI->Enable();
-    else
-        pCmdUI->Enable(FALSE);
-}
-
-VOID CLeashView::OnUpdateKrb5Properties(CCmdUI* pCmdUI)
 {
     if (CLeashApp::m_hKrb5DLL)
         pCmdUI->Enable();

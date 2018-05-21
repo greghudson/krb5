@@ -286,36 +286,6 @@ BEGIN
     GROUPBOX        "",stc32,7,7,227,98,NOT WS_VISIBLE
 END
 
-IDD_LEASH_PROPERTIES DIALOGEX 0, 0, 305, 166
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Leash Properties"
-FONT 8, "MS Sans Serif", 0, 0, 0x0
-BEGIN
-    EDITTEXT        IDC_EDIT_TIME_SERVER,59,22,233,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "&Help",IDC_BUTTON_LEASHINI_HELP2,138,145,50,14
-    DEFPUSHBUTTON   "&OK",IDOK,242,145,50,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,190,145,50,14
-    LTEXT           "Name:",IDC_STATIC_TIMESERVER,31,23,22,8
-    GROUPBOX        "Time Server",IDC_STATIC_OPTIONS,7,7,291,45
-    LTEXT           "Time server name is set in your computer's environment!\nTo edit, remove it from the environment.",
-                    IDC_STATIC_TIMEHOST,31,22,201,21
-    CONTROL         "Create Configuration Files &Missing at Startup",
-                    IDC_CHECK_CREATE_MISSING_CFG,"Button",BS_AUTOCHECKBOX |
-                    WS_TABSTOP,15,105,244,10
-    PUSHBUTTON      "&Restore Leash Defaults",IDC_RESET_DEFAULTS,31,126,243,
-                    14
-    GROUPBOX        "Miscellaneous Options",IDC_GROUP_LEASH_MISC,7,95,291,29
-    GROUPBOX        "Automatic MSLSA Ticket Importation",IDC_STATIC,7,52,291,
-                    40
-    CONTROL         "Never",IDC_RADIO_MSLSA_IMPORT_OFF,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,16,70,35,10
-    CONTROL         "Always",IDC_RADIO_MSLSA_IMPORT_ON,"Button",
-                    BS_AUTORADIOBUTTON | WS_TABSTOP,62,70,48,10
-    CONTROL         "When MSLSA Principal matches Default Realm",
-                    IDC_RADIO_MSLSA_IMPORT_MATCH,"Button",BS_AUTORADIOBUTTON |
-                    WS_TABSTOP,116,71,165,10
-END
-
 IDD_KRB5_PROP_CONTENT DIALOG  0, 0, 321, 126
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Configuration Options"
@@ -572,14 +542,6 @@ BEGIN
         RIGHTMARGIN, 234
         TOPMARGIN, 7
         BOTTOMMARGIN, 105
-    END
-
-    IDD_LEASH_PROPERTIES, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 298
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 159
     END
 
     IDD_KRB5_PROP_CONTENT, DIALOG

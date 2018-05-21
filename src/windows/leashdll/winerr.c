@@ -11,7 +11,6 @@
 */
 
 #include <stdio.h>
-#include "conf.h"
 
 // Private Include files
 #include "leashdll.h"

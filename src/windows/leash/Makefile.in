@@ -7,24 +7,12 @@ WSHELPER=wshelp$(BITS)
 SUBDIRS= htmlhelp
 
 OBJS=   \
-	$(OUTPRE)CLeashDragListBox.obj \
-	$(OUTPRE)Krb5Properties.obj \
-	$(OUTPRE)KrbAddHostServer.obj \
-	$(OUTPRE)KrbAddRealm.obj \
-	$(OUTPRE)KrbConfigOptions.obj \
-	$(OUTPRE)KrbDomainRealmMaintenance.obj \
-	$(OUTPRE)KrbEditHostServer.obj \
-	$(OUTPRE)KrbEditRealm.obj \
-	$(OUTPRE)KrbProperties.obj \
-	$(OUTPRE)KrbRealmHostMaintenance.obj \
 	$(OUTPRE)Leash.obj \
 	$(OUTPRE)LeashAboutBox.obj \
 	$(OUTPRE)LeashDebugWindow.obj \
 	$(OUTPRE)LeashDoc.obj \
-	$(OUTPRE)LeashFileDialog.obj \
 	$(OUTPRE)LeashFrame.obj \
 	$(OUTPRE)LeashMessageBox.obj \
-	$(OUTPRE)LeashProperties.obj \
 	$(OUTPRE)LeashUIApplication.obj \
 	$(OUTPRE)LeashUICommandHandler.obj \
 	$(OUTPRE)LeashView.obj \
@@ -33,7 +21,6 @@ OBJS=   \
 	$(OUTPRE)out2con.obj \
 	$(OUTPRE)StdAfx.obj \
 	$(OUTPRE)VSroutines.obj \
-	$(OUTPRE)KrbMiscConfigOpt.obj \
 	$(OUTPRE)KrbListTickets.obj
 
 RESFILE = $(OUTPRE)Leash.res
