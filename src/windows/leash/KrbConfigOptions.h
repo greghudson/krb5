@@ -19,8 +19,6 @@
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-// Krb4Properties.h : header file
-//
 
 #include "Resource.h"
 
@@ -40,7 +38,7 @@ private:
 	static BOOL m_dupEntriesError;
 	BOOL m_noRealm;
 	CString m_initDefaultRealm;
-	static CString m_newDefaultRealm; ///// also used for CKrb4DomainRealmMaintenance
+	static CString m_newDefaultRealm;
 	static CString m_hostServer;
 
 	static void ResetDefaultRealmComboBox();

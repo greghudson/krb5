@@ -91,8 +91,6 @@ private:
 	static void ResetDefaultRenewMinEditBox();
 	static void ResetDefaultRenewMaxEditBox();
 
-    BOOL m_initUseKrb4;
-    BOOL m_newUseKrb4;
     BOOL m_initKinitPreserve;
     BOOL m_newKinitPreserve;
 
@@ -159,7 +157,6 @@ protected:
 	afx_msg void OnEditKillfocusEditDefaultRenewMax();
 	afx_msg void OnResetDefaultRenewMaxEditBox();
 	afx_msg void OnSelchangeEditDefaultRenewMax();
-    afx_msg void OnCheckUseKrb4();
     afx_msg void OnCheckKinitPreserve();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

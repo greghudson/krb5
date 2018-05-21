@@ -113,15 +113,6 @@ void CLeashProperties::OnOK()
         return;
     }
 
-    if( getenv("USEKRB4") !=  NULL)
-    {
-        MessageBox("Kerberos 4 ticket requests are being controlled by the environment"
-                   "variable USEKRB4 instead of the registry. Leash cannot modify"
-                   "the environment. Use the System control panel instead.",
-                    "Leash", MB_OK);
-        return;
-    }
-
     if (SetRegistryVariable(TIMEHOST, timeServer_))
 	{
 		MessageBox("There was an error putting your entry into the Registry!",

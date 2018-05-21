@@ -182,16 +182,8 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Keyword" value="Ctrl+4">
-			<param name="Local" value="html/leash_option_krb4_properties.htm">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Keyword" value="Ctrl+5">
 			<param name="Local" value="html/leash_option_krb5_properties.htm">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Keyword" value="Ctrl+A">
-			<param name="Local" value="html/leash_option_afs_properties.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Keyword" value="Ctrl+D">
@@ -291,16 +283,8 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Keyword" value="AFS">
-			<param name="Local" value="html/leash_option_afs_properties.htm">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Keyword" value="Kerberos">
 			<param name="Local" value="html/leash_option_kerberos_properties.htm">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Keyword" value="Kerberos4">
-			<param name="Local" value="html/leash_option_krb4_properties.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Keyword" value="Kerberos5">

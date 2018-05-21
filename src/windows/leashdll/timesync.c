@@ -8,10 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef NO_KRB4
-#include <winkrbid.h>
-#endif
-
 #ifdef WSHELPER
 #include <wshelper.h>
 #else
@@ -167,11 +163,7 @@ LONG Leash_timesync(int MessageP)
     WSADATA             wsaData;
     char                name[80];
 
-    if ((pkrb5_init_context == NULL)
-#ifndef NO_KRB4
-        && (ptkt_string == NULL)
-#endif
-         )
+    if (pkrb5_init_context == NULL)
         return(0);
 
     wVersionRequested = 0x0101;

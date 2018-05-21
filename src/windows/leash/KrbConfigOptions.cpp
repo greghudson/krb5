@@ -82,66 +82,6 @@ static char far * near parse_str(char far*buffer,char far*result)
         return buffer;
 }
 
-#ifndef NO_KRB4
-int krb_get_krbhst(char* h, char* r, int n)
-{
-	char lbstorage[BUFSIZ];
-    char tr[REALM_SZ];
-    static FILE *cnffile; /*XXX pbh added static because of MS bug in fgets() */
-    static char FAR *linebuf; /*XXX pbh added static because of MS bug in fgets() */
-    int i;
-    char *p;
-
-    //static char buffer[80];
-    //krb_get_krbconf(buffer);
-    memset(lbstorage, '\0', BUFSIZ ); /* 4-22-94 */
-    linebuf = &lbstorage[0];
-
-    if ((cnffile = fopen(CKrbProperties::m_krbPath,"r")) == NULL) {
-        if (n==1) {
-            (void) strcpy(h,KRB_HOST);
-            return(KSUCCESS);
-        } else {
-            return(KFAILURE);
-        }
-    }
-    /* linebuf=(char FAR *)malloc(BUFSIZ); */ /*4-22-94*/
-    if (fgets(linebuf,BUFSIZ,cnffile)==NULL) {
-            /* free(linebuf); */ /* 4-22-94 */
-
-            return(KFAILURE);
-    }
-    /* bzero( tr, sizeof(tr) ); */   /* pbh 2-24-93 */
-    memset(tr, '\0', sizeof(tr) );
-    parse_str(linebuf,tr);
-    if (*tr=='\0') {
-            return (KFAILURE);
-    }
-    /* run through the file, looking for the nth server for this realm */
-    for (i = 1; i <= n;) {
-        if (fgets(linebuf, BUFSIZ, cnffile) == NULL) {
-            /* free(linebuf); */ /*4-22-94*/
-            (void) fclose(cnffile);
-            return(KFAILURE);
-        }
-        /* bzero( tr, sizeof(tr) ); */   /* pbh 2-24-93 */
-        memset(tr, '\0', sizeof(tr) );
-        p=parse_str(linebuf,tr);
-        if (*tr=='\0')
-                continue;
-        memset(h, '\0', lstrlen(h) );
-        parse_str(p,h);
-        if (*tr=='\0')
-                continue;
-        if (!lstrcmp(tr,r))
-                i++;
-    }
-    /* free(linebuf); */ /*4-22-94*/
-    (void) fclose(cnffile);
-    return(KSUCCESS);
-}
-#endif
-
 BOOL CKrbConfigOptions::OnInitDialog()
 {
     m_initDefaultRealm = _T("");
@@ -154,121 +94,8 @@ BOOL CKrbConfigOptions::OnInitDialog()
 
     CPropertyPage::OnInitDialog();
 
-#ifndef NO_KRB4
-	if (CLeashApp::m_hKrb4DLL && !CLeashApp::m_hKrb5DLL)
-	{  // Krb4 NOT krb5
-		// Fill in all edit boxes
-		char krbRealm[REALM_SZ + 1];
-		char krbhst[MAX_HSTNM + 1];
-		CStdioFile krbCon;
-		if (!krbCon.Open(CKrbProperties::m_krbPath, CFile::modeRead))
-		{
-			SetDlgItemText(IDC_EDIT_DEFAULT_REALM, KRB_REALM);
-			SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, KRB_MASTER);
-			//CheckRadioButton(IDC_RADIO_ADMIN_SERVER, IDC_RADIO_NO_ADMIN_SERVER, IDC_RADIO_NO_ADMIN_SERVER);
-			m_initDefaultRealm = m_newDefaultRealm = KRB_REALM;
-		}
-		else
-		{ // place krbRealm in Edit box
-			memset(krbRealm, '\0', sizeof(krbRealm));
-			if (!krbCon.ReadString(krbRealm, sizeof(krbRealm)) || '\r' == *krbRealm  ||
-				'\n' == *krbRealm || '\0' == *krbRealm)
-			{
-				SetDlgItemText(IDC_EDIT_DEFAULT_REALM, KRB_REALM);
-				SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, KRB_MASTER);
-				m_initDefaultRealm = m_newDefaultRealm = KRB_REALM;
-			}
-			else
-			{
-				*(krbRealm + strlen(krbRealm) - 1) = 0;
-				LPSTR pSpace = strchr(krbRealm, ' ');
-				if (pSpace)
-				  *pSpace = 0;
-
-				m_initDefaultRealm = m_newDefaultRealm = krbRealm;
-
-				memset(krbhst, '\0', sizeof(krbhst));
-				krbCon.Close();
-
-				// Check for Host
-				// don't use KRB4 - krb_get_krbhst - would have to re-logon, on file location
-				// change, to use this function
-				if (KFAILURE == pkrb_get_krbhst(krbhst, krbRealm, 1))
-				{
-					m_noKrbhostWarning = TRUE;
-				}
-				else
-				{ // place hostname in Edit Box
-					//SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, krbhst);
-
-					m_hostServer = krbhst;
-
-					// New stuff to put realms in Combo Box
-					CStdioFile krbCon;
-					if (!krbCon.Open(CKrbProperties::m_krbPath, CFile::modeRead))
-					{
-						m_noKrbFileError = TRUE;
-						m_noRealm = TRUE;
-					} else {
-
-						LPSTR space = NULL;
-						CHAR lineBuf[REALM_SZ + MAX_HSTNM + 20];
-						CHAR localRealm[REALM_SZ + MAX_HSTNM + 20];
-						memset(lineBuf, '\0', sizeof(lineBuf));
-						memset(localRealm, '\0', sizeof(localRealm));
-
-						if (krbCon.ReadString(localRealm, sizeof(localRealm)))
-						  *(localRealm + strlen(localRealm) - 1) = 0;
-						else
-						  return FALSE;
-
-						space = strchr(localRealm, ' ');
-						if (space)
-						  *space = 0;
-
-						while (TRUE)
-						{
-							if (!krbCon.ReadString(lineBuf, sizeof(lineBuf)))
-							  break;
-
-							*(lineBuf + sizeof(lineBuf) - 1) = 0;
-
-							if (strlen(lineBuf) == 0)
-								continue;
-
-							space = strchr(lineBuf, ' ');
-							if (!space) space = strchr(lineBuf, '\t');
-							if (space)
-							  *space = 0;
-							else
-							  ASSERT(0);
-
-                            // skip Kerberos Options
-                            if ( !strncmp(".KERBEROS.OPTION.",lineBuf,17) )
-                                continue;
-
-							if (CB_ERR == m_krbRealmEditbox.FindStringExact(-1, lineBuf))
-							{ // no dups
-								if (LB_ERR == m_krbRealmEditbox.AddString(lineBuf))
-								{
-									MessageBox("OnInitDialog::Can't add to Kerberos Realm Combobox",
-										   "Leash", MB_OK);
-									return FALSE;
-								}
-							}
-						}
-
-						m_krbRealmEditbox.SelectString(-1, krbRealm);
-
-					} // end of 'else'
-				} // end of 'place hostname in Edit Box' else statement
-			} // end of 'Check for Host' else statement
-		} // end of 'place krbRealm in Edit box' else
-	}
-	else
-#endif
 	if (CLeashApp::m_hKrb5DLL)
-	{ // Krb5 OR krb5 AND krb4
+	{
 		char *realm = NULL;
 		pkrb5_get_default_realm(CLeashApp::m_krbv5_context, &realm);
 
@@ -394,7 +221,7 @@ BOOL CKrbConfigOptions::OnApply()
 	krbCon2.Rename(krbCon2File, CKrbProperties::m_krbPath);
 
 	if (CLeashApp::m_hKrb5DLL)
-	{ // Krb5 OR krb5 AND krb4
+	{
 	    if ( !CLeashApp::m_krbv5_profile ) {
             CHAR confname[MAX_PATH];
             if (!CLeashApp::GetProfileFile(confname, sizeof(confname)))
@@ -469,32 +296,6 @@ void CKrbConfigOptions::OnSelchangeEditDefaultRealm()
 					SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, "No KDC information available");
 			}
 		}
-#ifndef NO_KRB4
-		else
-		{
-			CHAR krbhst[MAX_HSTNM + 1];
-			CHAR krbrlm[REALM_SZ + 1];
-
-			strcpy(krbrlm, CKrbConfigOptions::m_newDefaultRealm);
-			memset(krbhst, '\0', sizeof(krbhst));
-
-			// Check for Host
-			// don't use KRB4 - krb_get_krbhst - would have to re-logon, on file location
-			// change, to use this function
-			if (KFAILURE == pkrb_get_krbhst(krbhst, krbrlm, 1))
-			{
-				MessageBox("OnSelchangeEditDefaultRealm::Unable to find the Host Server for your Default Realm!!!\
-                            \n 'Apply' your changes and try again.",
-					        "Leash", MB_OK);
-			    SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, "");
-				return;
-			}
-
-			m_hostServer = krbhst;
-			if (strlen(krbhst))
-			  SetDlgItemText(IDC_EDIT_REALM_HOSTNAME, m_hostServer);
-		}
-#endif
 	}
 }
 

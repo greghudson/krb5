@@ -44,9 +44,7 @@ html\leash_option_expiration_alarm.htm
 html\leash_option_upper_case_realm.htm
 html\leash_option_leash_properties.htm
 html\leash_option_kerberos_properties.htm
-html\leash_option_krb4_properties.htm
 html\leash_option_krb5_properties.htm
-html\leash_option_afs_properties.htm
 html\leash_menu_help_why_use.htm
 html\leash_help_about_leash32.htm
 html\leash_topic_kerberos_help_topics.htm
@@ -99,7 +97,6 @@ html\hid_sc_restore.htm
 HID_ABOUT_KERBEROS = html\leash_topic_about_kerberos.htm
 HID_ABOUT_LEASH32_COMMAND = html\leash_menu_commands.htm
 HID_ABOUT_LEASH32_MODULES = html\leash_help_about_leash32.htm
-HID_AFS_PROPERTIES_COMMAND = html\leash_option_afs_properties.htm
 HID_CHANGE_PASSWORD_COMMAND	= html\leash_command_change_password.htm
 HID_DEBUG_WINDOW = html\leash_view_debug_window.htm
 HID_DEBUG_WINDOW_OPTION = html\leash_view_debug_window.htm
@@ -120,8 +117,6 @@ HID_KERBEROS_PROPERTIES_EDITDOM = html\leash_option_kerberos_properties.htm
 HID_KERBEROS_PROPERTIES_EDITHOST = html\leash_option_kerberos_properties.htm
 HID_KERBEROS_PROPERTIES_LISTDOM = html\leash_option_kerberos_properties.htm
 HID_KERBEROS_PROPERTIES_LISTRLM = html\leash_option_kerberos_properties.htm
-HID_KRB4_PROPERTIES_COMMAND	= html\leash_option_krb4_properties.htm
-HID_KRB4_PROPERTIES_EDIT = html\leash_option_krb4_properties.htm
 HID_KRB5_PROPERTIES_COMMAND	= html\leash_option_krb5_properties.htm
 HID_KRB5_PROPERTIES_EDIT = html\leash_option_krb5_properties.htm
 HID_KRB5_PROPERTIES_FORWARDING = html\leash_option_krb5_properties.htm
@@ -167,7 +162,6 @@ hid_sc_restore = html\hid_sc_restore.htm
 #define HID_ABOUT_KERBEROS              98320
 #define HID_ABOUT_LEASH32_COMMAND       123200
 #define HID_ABOUT_LEASH32_MODULES       131225
-#define HID_AFS_PROPERTIES_COMMAND		98327
 #define HID_CHANGE_PASSWORD_COMMAND		98315
 #define HID_DEBUG_WINDOW				131229
 #define HID_DEBUG_WINDOW_OPTION			98317
@@ -188,8 +182,6 @@ hid_sc_restore = html\hid_sc_restore.htm
 #define HID_KERBEROS_PROPERTIES_EDITHOST 131271
 #define HID_KERBEROS_PROPERTIES_LISTDOM 131279
 #define HID_KERBEROS_PROPERTIES_LISTRLM 131250
-#define HID_KRB4_PROPERTIES_COMMAND		98329
-#define HID_KRB4_PROPERTIES_EDIT		131232
 #define HID_KRB5_PROPERTIES_COMMAND		98330
 #define HID_KRB5_PROPERTIES_EDIT		131241
 #define HID_KRB5_PROPERTIES_FORWARDING  131240

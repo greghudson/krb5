@@ -113,16 +113,8 @@
 				<param name="Local" value="html/leash_option_kerberos_properties.htm">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Kerberos v4 Properties… Command, Ctrl+4">
-				<param name="Local" value="html/leash_option_krb4_properties.htm">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Kerberos v5 Properties Command, Ctrl+5">
 				<param name="Local" value="html/leash_option_krb5_properties.htm">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="AFS Properties Command, Ctrl+A">
-				<param name="Local" value="html/leash_option_afs_properties.htm">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="About Leash">

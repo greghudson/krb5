@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "leash.h"
 #include "KrbDomainRealmMaintenance.h"
-#include "Krb4EditDomainRealmList.h"
 #include "KrbProperties.h"
 
 #ifdef _DEBUG
@@ -139,33 +138,6 @@ BOOL CKrbDomainRealmMaintenance::OnApply()
 		return TRUE;
 	}
 
-#ifndef NO_KRB4
-	// Save to Kerberos Four config. file "Krb.con"
-	CStdioFile krbrealmCon;
-	if (!krbrealmCon.Open(CKrbProperties::m_krbrealmPath, CFile::modeCreate |
-			      CFile::modeNoTruncate |
-													 CFile::modeReadWrite))
-	{
-		LeashErrorBox("OnApply::Can't open Configuration File",
-					  CKrbProperties::m_krbrealmPath);
-		return TRUE;
-	}
-
-	krbrealmCon.SetLength(0);
-
-	char theNameValue[REALM_SZ + MAX_HSTNM + 2];
-
-	for (INT maxItems = m_KDCDomainList.GetCount(), item = 0; item < maxItems; item++)
-	{
-		if (LB_ERR == m_KDCDomainList.GetText(item, theNameValue))
-		  ASSERT(0);
-
-		krbrealmCon.WriteString(theNameValue);
-		krbrealmCon.WriteString("\n");
-	}
-
-	krbrealmCon.Close();
-#endif
 
 	return TRUE;
 }
@@ -192,58 +164,6 @@ void CKrbDomainRealmMaintenance::OnCancel()
 
 void CKrbDomainRealmMaintenance::OnButtonHostAdd()
 {
-////I don't understand why this is doing K4 operations here
-#ifndef NO_KRB4
-	CKrb4AddToDomainRealmList addToDomainRealmList;
-	if (IDOK == addToDomainRealmList.DoModal())
-	{
-		char theName[MAX_HSTNM + 1];
-		const char* Section[] = {"domain_realm", theName, NULL};
-		const char** section = Section;
-
-		if (addToDomainRealmList.GetNewRealm().IsEmpty())
-		  ASSERT(0);
-
-		if (CheckForDupDomain(addToDomainRealmList.GetNewDomainHost()))
-		{
-			MessageBox("Can't have duplicate Host/Domains!\nYour entry will not be saved to list",
-					   "Leash", MB_OK);
-			return;
-		}
-
-		CString newLine;
-		newLine = addToDomainRealmList.GetNewDomainHost() + " " + addToDomainRealmList.GetNewRealm();
-
-		if (LB_ERR != m_KDCDomainList.FindStringExact(-1, newLine))
-		{
-			MessageBox("We can't have duplicates!\nYour entry was not saved to list.",
-                        "Leash", MB_OK);
-			return;
-		}
-
-		CString newHost; // new section in the profile linklist
-		strcpy(theName, addToDomainRealmList.GetNewDomainHost());
-
-		long retval = pprofile_add_relation(CLeashApp::m_krbv5_profile,
-									         section, addToDomainRealmList.GetNewRealm());
-
-		if (retval)
-		{
-			MessageBox("OnButtonHostAdd::There is on error, profile will not be saved!!!\
-                        \nIf this error persist, contact your administrator.",
-				       "Leash", MB_OK);
-		}
-
-		m_KDCDomainList.AddString(newLine);
-		SetModified(TRUE);
-
-		if (1 == m_KDCDomainList.GetCount())
-		{
-			GetDlgItem(ID_BUTTON_HOST_REMOVE)->EnableWindow();
-			GetDlgItem(IDC_BUTTON_HOST_EDIT)->EnableWindow();
-		}
-	}
-#endif
 }
 
 void CKrbDomainRealmMaintenance::OnButtonHostEdit()
@@ -267,65 +187,6 @@ void CKrbDomainRealmMaintenance::OnButtonHostEdit()
 
 	strcpy(OLD_VALUE, pselItem + 1);
 	strcpy(theNameValue, pSelItem);
-
-	CKrb4EditDomainRealmList editDomainRealmList(pSelItem);
-
-	if (IDOK == editDomainRealmList.DoModal())
-	{
-		if (0 != strcmp(theName, editDomainRealmList.GetDomainHost())
-			&& CheckForDupDomain(editDomainRealmList.GetDomainHost()))
-		{ // Duplicate Host/Domain Error
-			MessageBox("We can't have duplicate Host/Domains!\nYour entry will not be saved to list",
-					   "Leash", MB_OK);
-			return;
-		}
-
-		const char* Section[] = {"domain_realm", theName, NULL};
-		const char** section = Section;
-
-		CString editedHost = editDomainRealmList.GetEditedItem();
-
-		if (0 != editedHost.CompareNoCase(theNameValue) &&
-			LB_ERR != m_KDCDomainList.FindStringExact(-1, editedHost))
-		{
-			MessageBox("We can't have duplicate Realms!\nYour entry was not saved to list.",
-                        "Leash", MB_OK);
-			delete [] pSelItem;
-			return;
-		}
-
-		long retval = pprofile_update_relation(CLeashApp::m_krbv5_profile,
-										        section, OLD_VALUE,	NULL);
-
-		if (retval)
-		{
-			MessageBox("OnButtonHostEdit::There is on error, profile will not be saved!!!\
-                        \nIf this error persist, contact your administrator.",
-					   "Leash", MB_OK);
-			return;
-		}
-
-		strcpy(theName, editDomainRealmList.GetDomainHost());
-
-		retval = pprofile_add_relation(CLeashApp::m_krbv5_profile,
-										section, editDomainRealmList.GetRealm());
-
-
-		if (retval)
-		{ // thsi might not be the best way to handle this type of error
-			MessageBox("OnButtonHostEdit::There is on error, profile will not be saved!!!\
-                        \nIf this error persist, contact your administrator.",
-					   "Leash", MB_OK);
-			return;
-		}
-
-		m_KDCDomainList.DeleteString(selItemIndex);
-		m_KDCDomainList.AddString(editedHost);
-		selItemIndex = m_KDCDomainList.FindStringExact(-1, editedHost);
-		m_KDCDomainList.SetCurSel(selItemIndex);
-
-		SetModified(TRUE);
-	}
 
 	delete [] pSelItem;
 }

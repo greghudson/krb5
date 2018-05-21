@@ -67,9 +67,6 @@ EXPORTS
 	Leash_get_default_publicip
 	Leash_set_default_publicip
     Leash_reset_default_publicip
-	Leash_get_default_use_krb4
-	Leash_set_default_use_krb4
-    Leash_reset_default_use_krb4
 	Leash_get_default_life_min
 	Leash_set_default_life_min
     Leash_reset_default_life_min
@@ -100,8 +97,5 @@ EXPORTS
     Leash_reset_defaults
 
 	; XXX - These have to go...
-	not_an_API_LeashAFSGetToken
-	not_an_API_LeashFreeTicketList
-	not_an_API_LeashKRB4GetTickets
 	not_an_API_LeashGetTimeServerName
     not_an_API_Leash_AcquireInitialTicketsIfNeeded

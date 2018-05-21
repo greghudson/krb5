@@ -64,24 +64,10 @@ TYPEDEF_FUNC(
 TYPEDEF_FUNC(
     long,
     WINAPIV,
-    not_an_API_LeashKRB4GetTickets,
-    (TICKETINFO *, TicketList **)
-    );
-TYPEDEF_FUNC(
-    long,
-    WINAPIV,
-    not_an_API_LeashAFSGetToken,
-    (TICKETINFO *, TicketList **, char *)
-    );
-TYPEDEF_FUNC(
-    long,
-    WINAPIV,
     not_an_API_LeashGetTimeServerName,
     (char *, const char*)
     );
 
-extern DECL_FUNC_PTR(not_an_API_LeashKRB4GetTickets);
-extern DECL_FUNC_PTR(not_an_API_LeashAFSGetToken);
 extern DECL_FUNC_PTR(not_an_API_LeashGetTimeServerName);
 extern DECL_FUNC_PTR(Leash_kdestroy);
 extern DECL_FUNC_PTR(Leash_changepwd_dlg);
@@ -101,8 +87,6 @@ extern DECL_FUNC_PTR(Leash_get_default_proxiable);
 extern DECL_FUNC_PTR(Leash_set_default_proxiable);
 extern DECL_FUNC_PTR(Leash_get_default_publicip);
 extern DECL_FUNC_PTR(Leash_set_default_publicip);
-extern DECL_FUNC_PTR(Leash_get_default_use_krb4);
-extern DECL_FUNC_PTR(Leash_set_default_use_krb4);
 extern DECL_FUNC_PTR(Leash_get_default_life_min);
 extern DECL_FUNC_PTR(Leash_set_default_life_min);
 extern DECL_FUNC_PTR(Leash_get_default_life_max);
@@ -126,9 +110,6 @@ extern DECL_FUNC_PTR(Leash_importable);
 extern DECL_FUNC_PTR(Leash_renew);
 extern DECL_FUNC_PTR(Leash_reset_defaults);
 
-////Do we still need this one?
-#define pLeashKRB4GetTickets     pnot_an_API_LeashKRB4GetTickets
-#define pLeashAFSGetToken        pnot_an_API_LeashAFSGetToken
 #define pLeashGetTimeServerName  pnot_an_API_LeashGetTimeServerName
 
 // psapi functions
@@ -268,7 +249,6 @@ class TicketInfoWrapper {
   public:
     HANDLE     lockObj;
     TICKETINFO Krb5;
-    TICKETINFO Afs;
 };
 extern TicketInfoWrapper ticketinfo;
 
