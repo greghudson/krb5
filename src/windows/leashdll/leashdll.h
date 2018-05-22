@@ -6,19 +6,6 @@
 extern "C" {
 #endif
 
-#define krb_err_func Leash_krb_err_func
-
-#include <stdarg.h>
-int lsh_com_err_proc (LPSTR whoami, long code,
-		      LPSTR fmt, va_list args);
-void FAR Leash_load_com_err_callback(FARPROC,FARPROC,FARPROC);
-
-
-#ifndef KRBERR
-#define KRBERR(code) (code + krb_err_base)
-#endif
-
-
 /* Internal Stuff */
 
 #include <windows.h>

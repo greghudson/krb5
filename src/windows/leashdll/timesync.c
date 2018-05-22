@@ -76,7 +76,7 @@ gettimeofday(
 
 
 LONG
-not_an_API_LeashGetTimeServerName(
+get_time_server_name(
     char *timeServerName,
     const char *valueName
     )
@@ -184,7 +184,7 @@ LONG Leash_timesync(int MessageP)
     else
         Port = sp->s_port;
 
-    not_an_API_LeashGetTimeServerName(hostname, TIMEHOST);
+    get_time_server_name(hostname, TIMEHOST);
 
     rc = ProcessTimeSync(hostname, Port, tmpstr);
 

@@ -109,11 +109,6 @@ END_MESSAGE_MAP()
 
 
 time_t CLeashView::m_ticketTimeLeft = 0;  // # of seconds left before tickets expire
-INT  CLeashView::m_forwardableTicket = 0;
-INT  CLeashView::m_proxiableTicket = 0;
-INT  CLeashView::m_renewableTicket = 0;
-INT  CLeashView::m_noaddressTicket = 0;
-DWORD CLeashView::m_publicIPAddress = 0;
 INT  CLeashView::m_ticketStatusKrb5 = 0; // Defense Condition: are we low on tickets?
 INT  CLeashView::m_warningOfTicketTimeLeftKrb5 = 0; // Prevents warning box from coming up repeatively
 INT  CLeashView::m_warningOfTicketTimeLeftLockKrb5 = 0;
@@ -352,11 +347,6 @@ CLeashView::CLeashView()
     m_hMenu = NULL;
     m_pApp = NULL;
     m_ccacheDisplay = NULL;
-    m_forwardableTicket = 0;
-    m_proxiableTicket = 0;
-    m_renewableTicket = 0;
-    m_noaddressTicket = 0;
-    m_publicIPAddress = 0;
     m_autoRenewTickets = 0;
     m_autoRenewalAttempted = 0;
     m_pWarningMessage = NULL;
@@ -539,21 +529,6 @@ VOID CLeashView::OnShowWindow(BOOL bShow, UINT nStatus)
 
         // Get State of Upper Case Realm
         m_upperCaseRealm = pLeash_get_default_uppercaserealm();
-
-        // Forwardable flag
-        m_forwardableTicket = pLeash_get_default_forwardable();
-
-        // Proxiable flag
-        m_proxiableTicket = pLeash_get_default_proxiable();
-
-        // Renewable flag
-        m_renewableTicket = pLeash_get_default_renewable();
-
-        // No Address flag
-        m_noaddressTicket = pLeash_get_default_noaddresses();
-
-        // Public IP Address
-        m_publicIPAddress = pLeash_get_default_publicip();
 
         // UI main display column widths
         for (int i=0; i<NUM_VIEW_COLUMNS; i++) {

@@ -27,7 +27,6 @@ Unregister_MITPasswordEditControl(
 extern char KRB_HelpFile[_MAX_PATH];
 
 // Function Prototypes.
-int lsh_com_err_proc (LPSTR whoami, long code, LPSTR fmt, va_list args);
 int DoNiftyErrorReport(long errnum, LPSTR what);
 LONG Leash_timesync(int);
 BOOL Leash_ms2mit(BOOL);

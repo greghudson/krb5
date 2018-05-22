@@ -60,57 +60,18 @@ TYPEDEF_FUNC(
 
 #define pGetModuleFileNameEx pGetModuleFileNameExA
 
-// leash functions
-TYPEDEF_FUNC(
-    long,
-    WINAPIV,
-    not_an_API_LeashGetTimeServerName,
-    (char *, const char*)
-    );
-
-extern DECL_FUNC_PTR(not_an_API_LeashGetTimeServerName);
 extern DECL_FUNC_PTR(Leash_kdestroy);
 extern DECL_FUNC_PTR(Leash_changepwd_dlg);
 extern DECL_FUNC_PTR(Leash_changepwd_dlg_ex);
 extern DECL_FUNC_PTR(Leash_kinit_dlg);
 extern DECL_FUNC_PTR(Leash_kinit_dlg_ex);
 extern DECL_FUNC_PTR(Leash_timesync);
-extern DECL_FUNC_PTR(Leash_get_default_lifetime);
-extern DECL_FUNC_PTR(Leash_set_default_lifetime);
-extern DECL_FUNC_PTR(Leash_get_default_forwardable);
-extern DECL_FUNC_PTR(Leash_set_default_forwardable);
-extern DECL_FUNC_PTR(Leash_get_default_renew_till);
-extern DECL_FUNC_PTR(Leash_set_default_renew_till);
-extern DECL_FUNC_PTR(Leash_get_default_noaddresses);
-extern DECL_FUNC_PTR(Leash_set_default_noaddresses);
-extern DECL_FUNC_PTR(Leash_get_default_proxiable);
-extern DECL_FUNC_PTR(Leash_set_default_proxiable);
-extern DECL_FUNC_PTR(Leash_get_default_publicip);
-extern DECL_FUNC_PTR(Leash_set_default_publicip);
-extern DECL_FUNC_PTR(Leash_get_default_life_min);
-extern DECL_FUNC_PTR(Leash_set_default_life_min);
-extern DECL_FUNC_PTR(Leash_get_default_life_max);
-extern DECL_FUNC_PTR(Leash_set_default_life_max);
-extern DECL_FUNC_PTR(Leash_get_default_renew_min);
-extern DECL_FUNC_PTR(Leash_set_default_renew_min);
-extern DECL_FUNC_PTR(Leash_get_default_renew_max);
-extern DECL_FUNC_PTR(Leash_set_default_renew_max);
-extern DECL_FUNC_PTR(Leash_get_default_renewable);
-extern DECL_FUNC_PTR(Leash_set_default_renewable);
-extern DECL_FUNC_PTR(Leash_get_lock_file_locations);
-extern DECL_FUNC_PTR(Leash_set_lock_file_locations);
 extern DECL_FUNC_PTR(Leash_get_default_uppercaserealm);
 extern DECL_FUNC_PTR(Leash_set_default_uppercaserealm);
 extern DECL_FUNC_PTR(Leash_get_default_mslsa_import);
-extern DECL_FUNC_PTR(Leash_set_default_mslsa_import);
-extern DECL_FUNC_PTR(Leash_get_default_preserve_kinit_settings);
-extern DECL_FUNC_PTR(Leash_set_default_preserve_kinit_settings);
 extern DECL_FUNC_PTR(Leash_import);
 extern DECL_FUNC_PTR(Leash_importable);
 extern DECL_FUNC_PTR(Leash_renew);
-extern DECL_FUNC_PTR(Leash_reset_defaults);
-
-#define pLeashGetTimeServerName  pnot_an_API_LeashGetTimeServerName
 
 // psapi functions
 extern DECL_FUNC_PTR(GetModuleFileNameExA);

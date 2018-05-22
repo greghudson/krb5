@@ -484,90 +484,32 @@ BOOL CLeashApp::InitInstance()
 // CLeashApp commands
 
 // leash functions
-DECL_FUNC_PTR(not_an_API_LeashGetTimeServerName);
 DECL_FUNC_PTR(Leash_kdestroy);
 DECL_FUNC_PTR(Leash_changepwd_dlg);
 DECL_FUNC_PTR(Leash_changepwd_dlg_ex);
 DECL_FUNC_PTR(Leash_kinit_dlg);
 DECL_FUNC_PTR(Leash_kinit_dlg_ex);
 DECL_FUNC_PTR(Leash_timesync);
-DECL_FUNC_PTR(Leash_get_default_lifetime);
-DECL_FUNC_PTR(Leash_set_default_lifetime);
-DECL_FUNC_PTR(Leash_get_default_forwardable);
-DECL_FUNC_PTR(Leash_set_default_forwardable);
-DECL_FUNC_PTR(Leash_get_default_renew_till);
-DECL_FUNC_PTR(Leash_set_default_renew_till);
-DECL_FUNC_PTR(Leash_get_default_noaddresses);
-DECL_FUNC_PTR(Leash_set_default_noaddresses);
-DECL_FUNC_PTR(Leash_get_default_proxiable);
-DECL_FUNC_PTR(Leash_set_default_proxiable);
-DECL_FUNC_PTR(Leash_get_default_publicip);
-DECL_FUNC_PTR(Leash_set_default_publicip);
-DECL_FUNC_PTR(Leash_get_default_life_min);
-DECL_FUNC_PTR(Leash_set_default_life_min);
-DECL_FUNC_PTR(Leash_get_default_life_max);
-DECL_FUNC_PTR(Leash_set_default_life_max);
-DECL_FUNC_PTR(Leash_get_default_renew_min);
-DECL_FUNC_PTR(Leash_set_default_renew_min);
-DECL_FUNC_PTR(Leash_get_default_renew_max);
-DECL_FUNC_PTR(Leash_set_default_renew_max);
-DECL_FUNC_PTR(Leash_get_default_renewable);
-DECL_FUNC_PTR(Leash_set_default_renewable);
-DECL_FUNC_PTR(Leash_get_lock_file_locations);
-DECL_FUNC_PTR(Leash_set_lock_file_locations);
 DECL_FUNC_PTR(Leash_get_default_uppercaserealm);
 DECL_FUNC_PTR(Leash_set_default_uppercaserealm);
 DECL_FUNC_PTR(Leash_get_default_mslsa_import);
-DECL_FUNC_PTR(Leash_set_default_mslsa_import);
-DECL_FUNC_PTR(Leash_get_default_preserve_kinit_settings);
-DECL_FUNC_PTR(Leash_set_default_preserve_kinit_settings);
 DECL_FUNC_PTR(Leash_import);
 DECL_FUNC_PTR(Leash_importable);
 DECL_FUNC_PTR(Leash_renew);
-DECL_FUNC_PTR(Leash_reset_defaults);
 
 FUNC_INFO leash_fi[] = {
-    MAKE_FUNC_INFO(not_an_API_LeashGetTimeServerName),
     MAKE_FUNC_INFO(Leash_kdestroy),
     MAKE_FUNC_INFO(Leash_changepwd_dlg),
     MAKE_FUNC_INFO(Leash_changepwd_dlg_ex),
     MAKE_FUNC_INFO(Leash_kinit_dlg),
 	MAKE_FUNC_INFO(Leash_kinit_dlg_ex),
     MAKE_FUNC_INFO(Leash_timesync),
-    MAKE_FUNC_INFO(Leash_get_default_lifetime),
-    MAKE_FUNC_INFO(Leash_set_default_lifetime),
-    MAKE_FUNC_INFO(Leash_get_default_renew_till),
-    MAKE_FUNC_INFO(Leash_set_default_renew_till),
-    MAKE_FUNC_INFO(Leash_get_default_forwardable),
-    MAKE_FUNC_INFO(Leash_set_default_forwardable),
-    MAKE_FUNC_INFO(Leash_get_default_noaddresses),
-    MAKE_FUNC_INFO(Leash_set_default_noaddresses),
-    MAKE_FUNC_INFO(Leash_get_default_proxiable),
-    MAKE_FUNC_INFO(Leash_set_default_proxiable),
-    MAKE_FUNC_INFO(Leash_get_default_publicip),
-    MAKE_FUNC_INFO(Leash_set_default_publicip),
-    MAKE_FUNC_INFO(Leash_get_default_life_min),
-    MAKE_FUNC_INFO(Leash_set_default_life_min),
-    MAKE_FUNC_INFO(Leash_get_default_life_max),
-    MAKE_FUNC_INFO(Leash_set_default_life_max),
-    MAKE_FUNC_INFO(Leash_get_default_renew_min),
-    MAKE_FUNC_INFO(Leash_set_default_renew_min),
-    MAKE_FUNC_INFO(Leash_get_default_renew_max),
-    MAKE_FUNC_INFO(Leash_set_default_renew_max),
-    MAKE_FUNC_INFO(Leash_get_default_renewable),
-    MAKE_FUNC_INFO(Leash_set_default_renewable),
-    MAKE_FUNC_INFO(Leash_get_lock_file_locations),
-    MAKE_FUNC_INFO(Leash_set_lock_file_locations),
     MAKE_FUNC_INFO(Leash_get_default_uppercaserealm),
     MAKE_FUNC_INFO(Leash_set_default_uppercaserealm),
     MAKE_FUNC_INFO(Leash_get_default_mslsa_import),
-    MAKE_FUNC_INFO(Leash_set_default_mslsa_import),
-    MAKE_FUNC_INFO(Leash_get_default_preserve_kinit_settings),
-    MAKE_FUNC_INFO(Leash_set_default_preserve_kinit_settings),
     MAKE_FUNC_INFO(Leash_import),
     MAKE_FUNC_INFO(Leash_importable),
     MAKE_FUNC_INFO(Leash_renew),
-    MAKE_FUNC_INFO(Leash_reset_defaults),
     END_FUNC_INFO
 };
 

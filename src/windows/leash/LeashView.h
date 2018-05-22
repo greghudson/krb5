@@ -224,11 +224,6 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	static INT   m_forwardableTicket;
-	static INT   m_proxiableTicket;
-    static INT   m_renewableTicket;
-    static INT   m_noaddressTicket;
-    static DWORD m_publicIPAddress;
     static BOOL  m_importedTickets;
 
     CLeashView();

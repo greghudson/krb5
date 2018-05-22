@@ -7,7 +7,6 @@ OBJS=	$(OUTPRE)krb5routines.$(OBJEXT) \
 	$(OUTPRE)leashdll.$(OBJEXT) \
 	$(OUTPRE)leasherr.$(OBJEXT) \
 	$(OUTPRE)lsh_pwd.$(OBJEXT) \
-	$(OUTPRE)lshcallb.$(OBJEXT) \
 	$(OUTPRE)lshfunc.$(OBJEXT) \
 	$(OUTPRE)lshutil.$(OBJEXT) \
 	$(OUTPRE)timesync.$(OBJEXT) \
