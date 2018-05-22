@@ -309,7 +309,6 @@ cc_free_NC_info,
 #define LEASH_REGISTRY_VALUE_LIFE_MAX "life_max"
 #define LEASH_REGISTRY_VALUE_RENEW_MIN "renew_min"
 #define LEASH_REGISTRY_VALUE_RENEW_MAX "renew_max"
-#define LEASH_REGISTRY_VALUE_LOCK_LOCATION "lock_file_locations"
 #define LEASH_REGISTRY_VALUE_PRESERVE_KINIT "preserve_kinit_options"
 
 /* must match values used within krb5_32.dll */

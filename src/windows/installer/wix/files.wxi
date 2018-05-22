@@ -185,10 +185,6 @@
 	                    <RegistryValue Id="reg_leash_3" Root="HKLM" Key="Software\MIT\Leash32\Settings" Name="AutoRenewTickets" Type="integer" Value="[LEASHAUTORENEWTICKETS]" KeyPath="yes"/>
 	                    <Condition>LEASHAUTORENEWTICKETS</Condition>
                     </Component>
-                    <Component Id="rcm_leash_5" Guid="$(var.rcm_leash_5_guid)" DiskId="1">
-	                    <RegistryValue Id="reg_leash_5" Root="HKLM" Key="Software\MIT\Leash" Name="lock_file_locations" Type="integer" Value="[LEASHLOCKFILELOCATIONS]" KeyPath="yes"/>
-	                    <Condition>LEASHLOCKFILELOCATIONS</Condition>
-                    </Component>
                     <Component Id="rcm_leash_6" Guid="$(var.rcm_leash_6_guid)" DiskId="1">
 	                    <RegistryValue Id="reg_leash_6" Root="HKLM" Key="Software\MIT\Leash" Name="MsLsaImport" Type="integer" Value="[LEASHMSLSAIMPORT]" KeyPath="yes"/>
 	                    <Condition>LEASHMSLSAIMPORT</Condition>

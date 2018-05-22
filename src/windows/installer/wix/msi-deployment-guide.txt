@@ -180,10 +180,6 @@ Kerberos for Windows
 	Setting: automatic ticket renewal
 	Values : '0' or '1'
 
-    LEASHLOCKFILELOCATIONS
-	Setting: lock configuration files location
-	Values : '0' or '1'
-
     LEASHMSLSAIMPORT
 	Setting: automatic importation of MSLSA credentials
 	Values : '0', '1' or '2'

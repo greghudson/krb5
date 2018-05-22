@@ -20,7 +20,6 @@ EXPORTS
 	initialize_lsh_error_table
 	Leash_initialize_krb_error_func
 	Leash_initialize_kadm_error_table
-	Leash_krb_err_func
 	Leash_set_help_file
 	Leash_get_help_file
 	Leash_timesync
@@ -57,9 +56,6 @@ EXPORTS
 	Leash_get_default_renew_max
 	Leash_set_default_renew_max
     Leash_reset_default_renew_max
-	Leash_get_lock_file_locations
-	Leash_set_lock_file_locations
-    Leash_reset_lock_file_locations
 	Leash_get_default_uppercaserealm
 	Leash_set_default_uppercaserealm
     Leash_reset_default_uppercaserealm
