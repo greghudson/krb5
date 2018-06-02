@@ -19,7 +19,6 @@
 #include "KrbConfigOptions.h"
 #include "LeashFileDialog.h"
 #include "LeashMessageBox.h"
-#include "wshelper.h"
 #include "lglobals.h"
 #include <io.h>
 #include <direct.h>

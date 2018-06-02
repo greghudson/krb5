@@ -16,7 +16,6 @@
 #include "KrbProperties.h"
 
 #include "Leash.h"
-#include "wshelper.h"
 #include "lglobals.h"
 #include "reminder.h"
 

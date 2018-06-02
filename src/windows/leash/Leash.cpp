@@ -30,8 +30,6 @@
 #include <krb5.h>
 #include <com_err.h>
 
-#include <wshelper.h>
-
 #ifndef NO_AFS
 #include "afscompat.h"
 #endif

@@ -25,7 +25,10 @@
  */
 
 #include "autoconf.h"
+
 #ifdef KRB5_DNS_LOOKUP
+
+#ifndef _WIN32
 
 #include "dnsglue.h"
 #ifdef __APPLE__
@@ -352,28 +355,17 @@ out:
     return -1;
 }
 
-#endif
+#endif /* !HAVE_NS_INITPARSE */
+#endif /* not _WIN32 */
 
-/*
- * Try to look up a TXT record pointing to a Kerberos realm
- */
-
-krb5_error_code
-k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
-                    char **realm)
+static krb5_error_code
+make_name(const char *prefix, const char *name,
+          char *fixed_buf, size_t bufsize)
 {
-    krb5_error_code retval = KRB5_ERR_HOST_REALM_UNKNOWN;
-    const unsigned char *p, *base;
-    char host[MAXDNAME];
-    int ret, rdlen, len;
-    struct krb5int_dns_state *ds = NULL;
     struct k5buf buf;
 
-    /*
-     * Form our query, and send it via DNS
-     */
+    k5_buf_init_fixed(&buf, fixed_buf, bufsize);
 
-    k5_buf_init_fixed(&buf, host, sizeof(host));
     if (name == NULL || name[0] == '\0') {
         k5_buf_add(&buf, prefix);
     } else {
@@ -389,11 +381,67 @@ k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
            the local domain or domain search lists to be expanded.
         */
 
-        if (buf.len > 0 && host[buf.len - 1] != '.')
+        if (buf.len > 0 && ((char *)buf.data)[buf.len - 1] != '.')
             k5_buf_add(&buf, ".");
     }
-    if (k5_buf_status(&buf) != 0)
+
+    return k5_buf_status(&buf);
+}
+
+/*
+ * Try to look up a TXT record pointing to a Kerberos realm
+ */
+
+#ifdef _WIN32
+
+krb5_error_code
+k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
+                    char **realm)
+{
+    krb5_error_code retval;
+    char host[MAXDNAME];
+    PDNS_RECORD rr;
+
+    *realm = NULL;
+
+    ret = make_name(prefix, name, host, sizeof(host));
+    if (ret)
+        return ret;
+
+    st = DnsQuery_UTF8(host, DNS_TYPE_TXT, DNS_QUERY_STANDARD, NULL,
+                       &rr, NULL);
+    if (st != ERROR_SUCCESS || records == NULL) {
+        TRACE_TXT_LOOKUP_NOTFOUND(context, host);
         return KRB5_ERR_HOST_REALM_UNKNOWN;
+    }
+
+    *realm = strdup(rr->Data.TXT.pStringArray[0]);
+    DnsRecordListFree(rr, DnsFreeRecordList);
+    if (*realm == NULL)
+        return ENOMEM;
+    TRACE_TXT_LOOKUP_SUCCESS(context, host, *realm);
+    return 0;
+}
+
+#else /* _WIN32 */
+
+krb5_error_code
+k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
+                    char **realm)
+{
+    krb5_error_code retval = KRB5_ERR_HOST_REALM_UNKNOWN;
+    const unsigned char *p, *base;
+    char host[MAXDNAME];
+    int ret, rdlen, len;
+    struct krb5int_dns_state *ds = NULL;
+
+    /*
+     * Form our query, and send it via DNS
+     */
+
+    ret = make_name(prefix, name, host, sizeof(host));
+    if (ret)
+        return ret;
     ret = krb5int_dns_init(&ds, host, C_IN, T_TXT);
     if (ret < 0) {
         TRACE_TXT_LOOKUP_NOTFOUND(context, host);
@@ -429,4 +477,5 @@ errout:
     return retval;
 }
 
+#endif /* not _WIN32 */
 #endif /* KRB5_DNS_LOOKUP */
