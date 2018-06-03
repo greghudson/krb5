@@ -47,16 +47,16 @@ krb5int_free_srv_dns_data (struct srv_dns_entry *p)
 
 /* Construct a DNS label of the form "service.[protocol.]realm.", placing the
  * result into fixed_buf.  protocol may be NULL. */
-static krb5_error_code
-prepare_lookup_buf(const krb5_data *realm, const char *service,
-                   const char *protocol, char *fixed_buf, size_t bufsize)
+static char *
+make_lookup_domain(const krb5_data *realm, const char *service,
+                   const char *protocol)
 {
     struct k5buf buf;
 
     if (memchr(realm->data, 0, realm->length))
-        return EINVAL;
+        return NULL;
 
-    k5_buf_init_fixed(&buf, fixed_buf, bufsize);
+    k5_buf_init_dynamic(&buf);
     k5_buf_add_fmt(&buf, "%s.", service);
     if (protocol != NULL)
         k5_buf_add_fmt(&buf, "%s.", protocol);
@@ -72,7 +72,7 @@ prepare_lookup_buf(const krb5_data *realm, const char *service,
     if (buf.len > 0 && ((char *)buf.data)[buf.len - 1] != '.')
         k5_buf_add(&buf, ".");
 
-    return k5_buf_status(&buf);
+    return buf.data;
 }
 
 /* Insert new into the list *head, ordering by priority.  Weight is not
@@ -104,6 +104,8 @@ place_srv_entry(struct srv_dns_entry **head, struct srv_dns_entry *new)
 
 #ifdef _WIN32
 
+#include <windns.h>
+
 krb5_error_code
 k5_make_uri_query(krb5_context context, const krb5_data *realm,
                   const char *service, struct srv_dns_entry **answers)
@@ -119,31 +121,31 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
                              const char *service, const char *protocol,
                              struct srv_dns_entry **answers)
 {
-    char host[MAXDNAME];
+    char *domain = NULL;
     DNS_STATUS st;
     PDNS_RECORD records, rr;
     struct srv_dns_entry *head = NULL, *srv = NULL;
 
     *answers = NULL;
 
-    ret = prepare_lookup_buf(realm, service, protocol, host, sizeof(host));
-    if (ret)
+    domain = make_lookup_domain(realm, service, protocol);
+    if (domain == NULL)
         return 0;
 
-    TRACE_DNS_SRV_SEND(context, host);
+    TRACE_DNS_SRV_SEND(context, domain);
 
     st = DnsQuery_UTF8(domain, DNS_TYPE_SRV, DNS_QUERY_STANDARD, NULL,
                        &records, NULL);
     if (st != ERROR_SUCCESS)
         return 0;
 
-    for (rr = records; rr != NULL; rr = rr->next) {
+    for (rr = records; rr != NULL; rr = rr->pNext) {
         if (rr->wType != DNS_TYPE_SRV)
             continue;
 
         srv = malloc(sizeof(struct srv_dns_entry));
         if (srv == NULL)
-            goto out;
+            goto cleanup;
 
         srv->priority = rr->Data.SRV.wPriority;
         srv->weight = rr->Data.SRV.wWeight;
@@ -151,7 +153,7 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
         /* Make sure the name looks fully qualified to the resolver. */
         if (asprintf(&srv->host, "%s.", rr->Data.SRV.pNameTarget) < 0) {
             free(srv);
-            goto out;
+            goto cleanup;
         }
 
         TRACE_DNS_SRV_ANS(context, srv->host, srv->port, srv->priority,
@@ -160,8 +162,11 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
     }
 
 cleanup:
+    free(domain);
     if (records != NULL)
         DnsRecordListFree(records, DnsFreeRecordList);
+    *answers = head;
+    return 0;
 }
 
 #else /* _WIN32 */
@@ -174,7 +179,7 @@ k5_make_uri_query(krb5_context context, const krb5_data *realm,
                   const char *service, struct srv_dns_entry **answers)
 {
     const unsigned char *p = NULL, *base = NULL;
-    char host[MAXDNAME];
+    char *domain = NULL;
     int size, ret, rdlen;
     unsigned short priority, weight;
     struct krb5int_dns_state *ds = NULL;
@@ -183,13 +188,13 @@ k5_make_uri_query(krb5_context context, const krb5_data *realm,
     *answers = NULL;
 
     /* Construct service.realm. */
-    ret = prepare_lookup_buf(realm, service, NULL, host, sizeof(host));
-    if (ret)
+    domain = make_lookup_domain(realm, service, NULL);
+    if (domain == NULL)
         return 0;
 
-    TRACE_DNS_URI_SEND(context, host);
+    TRACE_DNS_URI_SEND(context, domain);
 
-    size = krb5int_dns_init(&ds, host, C_IN, T_URI);
+    size = krb5int_dns_init(&ds, domain, C_IN, T_URI);
     if (size < 0)
         goto out;
 
@@ -222,6 +227,7 @@ k5_make_uri_query(krb5_context context, const krb5_data *realm,
 
 out:
     krb5int_dns_fini(ds);
+    free(domain);
     *answers = head;
     return 0;
 }
@@ -239,7 +245,7 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
                              struct srv_dns_entry **answers)
 {
     const unsigned char *p = NULL, *base = NULL;
-    char host[MAXDNAME];
+    char *domain = NULL, host[MAXDNAME];
     int size, ret, rdlen, nlen;
     unsigned short priority, weight, port;
     struct krb5int_dns_state *ds = NULL;
@@ -256,13 +262,13 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
      *
      */
 
-    ret = prepare_lookup_buf(realm, service, protocol, host, sizeof(host));
-    if (ret)
+    domain = make_lookup_domain(realm, service, protocol);
+    if (domain == NULL)
         return 0;
 
-    TRACE_DNS_SRV_SEND(context, host);
+    TRACE_DNS_SRV_SEND(context, domain);
 
-    size = krb5int_dns_init(&ds, host, C_IN, T_SRV);
+    size = krb5int_dns_init(&ds, domain, C_IN, T_SRV);
     if (size < 0)
         goto out;
 
@@ -312,6 +318,7 @@ krb5int_make_srv_query_realm(krb5_context context, const krb5_data *realm,
 
 out:
     krb5int_dns_fini(ds);
+    free(domain);
     *answers = head;
     return 0;
 }

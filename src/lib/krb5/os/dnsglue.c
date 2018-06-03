@@ -24,7 +24,8 @@
  * or implied warranty.
  */
 
-#include "autoconf.h"
+#include "k5-int.h"
+#include "os-proto.h"
 
 #ifdef KRB5_DNS_LOOKUP
 
@@ -358,13 +359,12 @@ out:
 #endif /* !HAVE_NS_INITPARSE */
 #endif /* not _WIN32 */
 
-static krb5_error_code
-make_name(const char *prefix, const char *name,
-          char *fixed_buf, size_t bufsize)
+static char *
+make_lookup_domain(const char *prefix, const char *name)
 {
     struct k5buf buf;
 
-    k5_buf_init_fixed(&buf, fixed_buf, bufsize);
+    k5_buf_init_dynamic(&buf);
 
     if (name == NULL || name[0] == '\0') {
         k5_buf_add(&buf, prefix);
@@ -385,7 +385,7 @@ make_name(const char *prefix, const char *name,
             k5_buf_add(&buf, ".");
     }
 
-    return k5_buf_status(&buf);
+    return buf.data;
 }
 
 /*
@@ -394,33 +394,41 @@ make_name(const char *prefix, const char *name,
 
 #ifdef _WIN32
 
+#include <windns.h>
+
 krb5_error_code
 k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
                     char **realm)
 {
-    krb5_error_code retval;
-    char host[MAXDNAME];
-    PDNS_RECORD rr;
+    krb5_error_code ret = 0;
+    char *domain = NULL;
+    PDNS_RECORD rr = NULL;
+    DNS_STATUS st;
 
     *realm = NULL;
 
-    ret = make_name(prefix, name, host, sizeof(host));
-    if (ret)
-        return ret;
+    domain = make_lookup_domain(prefix, name);
+    if (domain == NULL)
+        return ENOMEM;
 
-    st = DnsQuery_UTF8(host, DNS_TYPE_TXT, DNS_QUERY_STANDARD, NULL,
+    st = DnsQuery_UTF8(domain, DNS_TYPE_TEXT, DNS_QUERY_STANDARD, NULL,
                        &rr, NULL);
-    if (st != ERROR_SUCCESS || records == NULL) {
-        TRACE_TXT_LOOKUP_NOTFOUND(context, host);
-        return KRB5_ERR_HOST_REALM_UNKNOWN;
+    if (st != ERROR_SUCCESS || rr == NULL) {
+        TRACE_TXT_LOOKUP_NOTFOUND(context, domain);
+        ret = KRB5_ERR_HOST_REALM_UNKNOWN;
+        goto cleanup;
     }
 
     *realm = strdup(rr->Data.TXT.pStringArray[0]);
-    DnsRecordListFree(rr, DnsFreeRecordList);
     if (*realm == NULL)
-        return ENOMEM;
-    TRACE_TXT_LOOKUP_SUCCESS(context, host, *realm);
-    return 0;
+        ret = ENOMEM;
+    TRACE_TXT_LOOKUP_SUCCESS(context, domain, *realm);
+
+cleanup:
+    free(domain);
+    if (rr != NULL)
+        DnsRecordListFree(rr, DnsFreeRecordList);
+    return ret;
 }
 
 #else /* _WIN32 */
@@ -431,7 +439,7 @@ k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
 {
     krb5_error_code retval = KRB5_ERR_HOST_REALM_UNKNOWN;
     const unsigned char *p, *base;
-    char host[MAXDNAME];
+    char *domain;
     int ret, rdlen, len;
     struct krb5int_dns_state *ds = NULL;
 
@@ -439,12 +447,12 @@ k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
      * Form our query, and send it via DNS
      */
 
-    ret = make_name(prefix, name, host, sizeof(host));
-    if (ret)
-        return ret;
-    ret = krb5int_dns_init(&ds, host, C_IN, T_TXT);
+    domain = make_lookup_domain(prefix, name);
+    if (domain == NULL)
+        return ENOMEM;
+    ret = krb5int_dns_init(&ds, domain, C_IN, T_TXT);
     if (ret < 0) {
-        TRACE_TXT_LOOKUP_NOTFOUND(context, host);
+        TRACE_TXT_LOOKUP_NOTFOUND(context, domain);
         goto errout;
     }
 
@@ -467,13 +475,14 @@ k5_try_realm_txt_rr(krb5_context context, const char *prefix, const char *name,
     if ( (*realm)[len-1] == '.' )
         (*realm)[len-1] = '\0';
     retval = 0;
-    TRACE_TXT_LOOKUP_SUCCESS(context, host, *realm);
+    TRACE_TXT_LOOKUP_SUCCESS(context, domain, *realm);
 
 errout:
     if (ds != NULL) {
         krb5int_dns_fini(ds);
         ds = NULL;
     }
+    free(domain);
     return retval;
 }
 

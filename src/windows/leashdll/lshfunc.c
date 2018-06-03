@@ -18,8 +18,6 @@
 #include "leash-int.h"
 #include "leashids.h"
 
-#include <mitwhich.h>
-
 #include "reminder.h"
 
 static char FAR *err_context;
