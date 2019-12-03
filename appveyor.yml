@@ -7,6 +7,7 @@ build_script:
   - set PATH=%PATH%;%wix%bin
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - set
+  - where perl
   - nmake -f Makefile.in prep-windows
   - nmake
   - nmake install
