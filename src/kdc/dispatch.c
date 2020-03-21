@@ -59,6 +59,7 @@ finish_dispatch(struct dispatch_state *state, krb5_error_code code,
         response->length > (unsigned int)max_dgram_reply_size) {
         krb5_free_data(kdc_context, response);
         response = NULL;
+        krb5_klog_syslog(LOG_INFO, "response is too big");
         code = make_too_big_error(kdc_active_realm, &response);
         if (code)
             krb5_klog_syslog(LOG_ERR, "error constructing "
