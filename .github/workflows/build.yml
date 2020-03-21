@@ -9,8 +9,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                name: [linux-clang, linux-clang-openssl, linux-gcc]
+                name: [macos-clang, linux-clang, linux-clang-openssl, linux-gcc]
                 include:
+                    - name: macos-clang
+                      os: macos-latest
+                      compiler: clang
+                      configureopts: CPPFLAGS=-I/usr/local/opt/openssl/include LDFLAGS=-L/usr/local/opt/openssl/lib
+                      env:
+                        PATH: /usr/local/opt/bison/bin:/usr/local/opt/tcl-tk/bin:$PATH
                     - name: linux-clang
                       os: ubuntu-18.04
                       compiler: clang
@@ -26,6 +32,11 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v1
+            - name: macOS setup
+              if: matrix.os == 'macos-latest'
+              run: |
+                brew update
+                brew install bison openldap openssl deja-gnu automake tcl-tk
             - name: Linux setup
               if: startsWith(matrix.os, 'ubuntu')
               run: |
