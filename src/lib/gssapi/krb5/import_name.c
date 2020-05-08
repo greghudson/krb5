@@ -140,7 +140,7 @@ krb5_gss_import_name(minor_status, input_name_buffer,
     krb5_authdata_context ad_context = NULL;
     OM_uint32 status = GSS_S_FAILURE;
     krb5_gss_name_t name;
-    int flags = 0;
+    int flags = KRB5_PRINCIPAL_PARSE_NO_DEF_REALM;
 
     *output_name = NULL;
     *minor_status = 0;

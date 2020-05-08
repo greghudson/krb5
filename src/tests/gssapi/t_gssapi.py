@@ -148,7 +148,7 @@ realm.run(['./t_inq_cred', '-k', '-b'], expected_msg=realm.host_princ)
 
 # Test gss_export_name behavior.
 out = realm.run(['./t_export_name', 'u:x'])
-if out != '0401000B06092A864886F7120102020000000D78404B5242544553542E434F4D\n':
+if out != '0401000B06092A864886F712010202000000027840\n':
     fail('Unexpected output from t_export_name (krb5 username)')
 output = realm.run(['./t_export_name', '-s', 'u:xyz'])
 if output != '0401000806062B06010505020000000378797A\n':
@@ -188,7 +188,8 @@ realm.run(['./t_ciflags', 'p:' + realm.host_princ])
 
 # Test that inquire_context works properly, even on incomplete
 # contexts.
-realm.run(['./t_inq_ctx', 'user', password('user'), 'p:%s' % realm.host_princ])
+realm.run(['./t_inq_ctx', realm.user_princ, password('user'),
+           'p:%s' % realm.host_princ])
 
 if runenv.sizeof_time_t <= 4:
     skip_rest('y2038 GSSAPI tests', 'platform has 32-bit time_t')

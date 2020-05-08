@@ -183,6 +183,7 @@ krb5_parse_name_flags(krb5_context context, const char *name,
     krb5_boolean require_realm = (flags & KRB5_PRINCIPAL_PARSE_REQUIRE_REALM);
     krb5_boolean no_realm = (flags & KRB5_PRINCIPAL_PARSE_NO_REALM);
     krb5_boolean ignore_realm = (flags & KRB5_PRINCIPAL_PARSE_IGNORE_REALM);
+    krb5_boolean no_def_realm = (flags & KRB5_PRINCIPAL_PARSE_NO_DEF_REALM);
 
     *principal_out = NULL;
 
@@ -203,7 +204,7 @@ krb5_parse_name_flags(krb5_context context, const char *name,
                       _("Principal %s is missing required realm"), name);
             goto cleanup;
         }
-        if (!no_realm && !ignore_realm) {
+        if (!no_realm && !ignore_realm && !no_def_realm) {
             ret = krb5_get_default_realm(context, &default_realm);
             if (ret)
                 goto cleanup;
