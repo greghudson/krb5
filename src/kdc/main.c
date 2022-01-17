@@ -208,6 +208,7 @@ init_realm(kdc_realm_t * rdp, krb5_pointer aprof, char *realm,
     int                 kdb_open_flags;
     char                *svalue = NULL;
     const char          *hierarchy[4];
+    krb5_enctype        etype;
     krb5_kvno       mkvno = IGNORE_VNO;
     char ename[32];
 
@@ -380,12 +381,12 @@ init_realm(kdc_realm_t * rdp, krb5_pointer aprof, char *realm,
         goto whoops;
     }
 
-    if (krb5int_c_deprecated_enctype(rdp->realm_mkey.enctype)) {
-        if (krb5_enctype_to_name(rdp->realm_mkey.enctype, FALSE, ename,
-                                 sizeof(ename)))
+    etype = rdp->realm_mkey.enctype;
+    if (etype != ENCTYPE_NULL && krb5int_c_deprecated_enctype(etype)) {
+        if (krb5_enctype_to_name(etype, FALSE, ename, sizeof(ename)) != 0)
             ename[0] = '\0';
-        fprintf(stderr, _("Stash file %s uses DEPRECATED enctype %s!\n"),
-                rdp->realm_stash, ename);
+        fprintf(stderr, _("Stashed master key uses DEPRECATED enctype %s!\n"),
+                ename);
     }
 
     if ((kret = krb5_db_fetch_mkey_list(rdp->realm_context, rdp->realm_mprinc,
