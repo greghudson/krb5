@@ -1,8 +1,8 @@
 mydir=lib$(S)krb5$(S)ccache
 BUILDTOP=$(REL)..$(S)..$(S)..
-SUBDIRS = # ccapi
+SUBDIRS = ccapi
 WINSUBDIRS = ccapi
-##WIN32##DEFINES = -DUSE_CCAPI
+DEFINES = -DUSE_CCAPI
 
 LOCALINCLUDES = -I$(srcdir)$(S)ccapi
 

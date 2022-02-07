@@ -1446,6 +1446,7 @@ if test "${DEFCCNAME+set}" != set; then
 		# For macOS 10.7 (Darwin 11) and later, the native ccache uses
 		# the KCM daemon.
 		DEFCCNAME=KCM:
+		LIBS="$LIBS -framework Kerberos"
 		;;
 	esac]
 	if test "${DEFCCNAME+set}" != set; then
@@ -1493,7 +1494,8 @@ V5_AC_OUTPUT_MAKEFILE(.
 	lib/crypto/openssl lib/crypto/openssl/des
 	lib/crypto/openssl/enc_provider lib/crypto/openssl/hash_provider
 
-	lib/krb5 lib/krb5/error_tables lib/krb5/asn.1 lib/krb5/ccache
+	lib/krb5 lib/krb5/error_tables lib/krb5/asn.1
+	lib/krb5/ccache lib/krb5/ccache/ccapi
 	lib/krb5/keytab lib/krb5/krb lib/krb5/rcache lib/krb5/os
 	lib/krb5/unicode
 
