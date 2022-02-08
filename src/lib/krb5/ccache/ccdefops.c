@@ -24,21 +24,14 @@
  * or implied warranty.
  */
 
-/* Default credentials cache determination.  This is a separate file
- * so that the user can more easily override it. */
+/* This file determines the default credential cache type, which is used when a
+ * cache name does not contain a type prefix. */
 
 #include "k5-int.h"
 
-#if defined(USE_CCAPI)
+#ifdef _WIN32
 
-/*
- * Macs use the shared, memory based credentials cache
- * Windows may also use the ccapi cache, but only if the Krbcc32.dll
- * can be found; otherwise it falls back to using the old
- * file-based ccache.
- */
 #include "stdcc.h" /* from ccapi subdir */
-
 const krb5_cc_ops *krb5_cc_dfl_ops = &krb5_cc_stdcc_ops;
 
 #elif defined(NO_FILE_CCACHE)
