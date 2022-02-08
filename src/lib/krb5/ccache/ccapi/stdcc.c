@@ -408,7 +408,8 @@ krb5_stdccv3_initialize (krb5_context context,
 {
     krb5_error_code err = 0;
     stdccCacheDataPtr ccapi_data = id->data;
-    char *name = NULL;
+    char *name = NULL, *fullname = NULL;
+    const char *ccname;
     cc_ccache_t ccache = NULL;
 
     if (id == NULL) { err = KRB5_CC_NOMEM; }
@@ -421,10 +422,20 @@ krb5_stdccv3_initialize (krb5_context context,
         err = krb5_unparse_name(context, princ, &name);
     }
 
+#ifdef TARGET_OS_MAC
     if (!err) {
-        err = cc_context_create_ccache (gCntrlBlock, ccapi_data->cache_name,
-                                        cc_credentials_v5, name,
-                                        &ccache);
+        if (asprintf (&fullname, "API:%s", ccapi_data->cache_name) < 0)
+            err = ENOMEM;
+        if (!err)
+            ccname = fullname;
+    }
+#else
+    ccname = ccapi_data->cache_name;
+#endif
+
+    if (!err) {
+        err = cc_context_create_ccache (gCntrlBlock, ccname, cc_credentials_v5,
+                                        name, &ccache);
     }
 
     if (!err) {
@@ -440,8 +451,9 @@ krb5_stdccv3_initialize (krb5_context context,
         cache_changed ();
     }
 
-    if (ccache) { cc_ccache_release (ccache); }
-    if (name  ) { krb5_free_unparsed_name(context, name); }
+    if (ccache  ) { cc_ccache_release (ccache); }
+    if (name    ) { krb5_free_unparsed_name(context, name); }
+    if (fullname) { free(fullname); }
 
     return cc_err_xlate(err);
 }
