@@ -16,6 +16,7 @@
 #if !defined LEASHGLOBALS_H
 #define LEASHGLOBALS_H
 
+#include <windows.h>
 #include <tlhelp32.h>
 #include <loadfuncs-com_err.h>
 #include <loadfuncs-krb5.h>

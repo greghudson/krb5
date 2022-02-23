@@ -20,10 +20,6 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
 // Help
 #define HID_GET_TICKETS_COMMAND			98343 // ID_INIT_TICKET + 65536
 #define HID_RENEW_TICKETS_COMMAND       98312 // ID_RENEW_TICKET + 65536
@@ -111,7 +107,6 @@ public:
 	static krb5_context m_krbv5_context;
 	static profile_t    m_krbv5_profile;
 	static HINSTANCE    m_hKrbLSA;
-	static int          m_useRibbon; // temporary while ribbon UI in dev
 	static BOOL         m_bUpdateDisplay;
 
 	CLeashApp();

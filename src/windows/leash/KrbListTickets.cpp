@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "lglobals.h"
 #include "krb5.h"
 

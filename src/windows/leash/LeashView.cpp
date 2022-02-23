@@ -13,8 +13,6 @@
 // 20030508     JEA     Added
 //*****************************************************************************
 
-#include "stdafx.h"
-#include <afxpriv.h>
 #include "Leash.h"
 #include "LeashDoc.h"
 #include "LeashView.h"

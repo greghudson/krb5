@@ -14,7 +14,6 @@
 // 12/02/98	ADL	Original
 //**************************************************************************
 
-#include "stdafx.h"
 #include "Leash.h"
 
 #include "MainFrm.h"
@@ -29,8 +28,6 @@
 #include <com_err.h>
 
 #include <errno.h>
-
-#include <afxwin.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,7 +47,6 @@ HINSTANCE CLeashApp::m_hToolHelp32 = 0;
 krb5_context CLeashApp::m_krbv5_context = 0;
 profile_t CLeashApp::m_krbv5_profile = 0;
 HINSTANCE CLeashApp::m_hKrbLSA = 0;
-int CLeashApp::m_useRibbon = TRUE;
 BOOL CLeashApp::m_bUpdateDisplay = FALSE;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -277,7 +273,7 @@ BOOL CLeashApp::InitInstance()
             }
             else if (0 == stricmp(optionParam+1, "noribbon"))
             {
-                m_useRibbon = FALSE;
+                /* Ignore; no longer supported. */
             }
             else
             {

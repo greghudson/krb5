@@ -16,7 +16,6 @@ OBJS=   \
 	$(OUTPRE)LeashUICommandHandler.obj \
 	$(OUTPRE)LeashView.obj \
 	$(OUTPRE)MainFrm.obj \
-	$(OUTPRE)StdAfx.obj \
 	$(OUTPRE)KrbListTickets.obj
 
 RESFILE = $(OUTPRE)Leash.res

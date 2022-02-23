@@ -14,7 +14,6 @@
 //*****************************************************************************
 
 
-#include "stdafx.h"
 #include "leash.h"
 #include "LeashAboutBox.h"
 #include "reminder.h"

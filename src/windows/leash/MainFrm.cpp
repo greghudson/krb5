@@ -13,7 +13,6 @@
 //	**************************************************************************************
 
 
-#include "stdafx.h"
 #include "LeashUIApplication.h"
 #include "Leash.h"
 #include "MainFrm.h"
@@ -92,7 +91,6 @@ CMainFrame::~CMainFrame()
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-    if (CLeashApp::m_useRibbon) {
         HWND hwnd;
         HRESULT hr;
         // Fixup tooltips (cribbed from http://social.msdn.microsoft.com/Forums/en/vcmfcatl/thread/5c5b4879-d278-4d79-8894-99e7f9b322df)
@@ -124,7 +122,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
             MessageBox("LeashUIApplication::CreateInstance!", "Error", MB_OK);
             return -1;
         }
-    }
 
 	if (CLeashFrame::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -153,15 +150,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 #endif
 */
-	if ((!CLeashApp::m_useRibbon) &&
-		(!m_wndToolBar.Create(this) ||
-		 !m_wndToolBar.LoadToolBar(IDR_MAINFRAME)))
-	{
-		MessageBox("There is problem creating the Leash Toolbar!",
-                   "Error", MB_OK);
-        TRACE0("Failed to create toolbar\n");
-		return -1;      // fail to create
-	}
 
 #ifndef NO_STATUS_BAR
 	if (!m_wndStatusBar.Create(this) ||
@@ -178,14 +166,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO: Remove this if you don't want tool tips or a resizable toolbar
 	//m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() |
 	//	                     CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
-
-    if (!CLeashApp::m_useRibbon) {
-	// TODO: Delete these three lines if you don't want the toolbar to
-	//  be dockable
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndToolBar);
-    }
 
 	return 0;
 }
