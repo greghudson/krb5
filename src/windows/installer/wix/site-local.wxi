@@ -38,15 +38,6 @@
         <?define ProductCode="????????-????-????-????-????????????"?>
     <?endif?>
 
-    <!-- One of the following must be defined and must correspond to the
-         version of compiler used for building Kerberos for Windows -->
-
-    <!-- <?define CL1200?> -->
-    <!-- <?define CL1300?> -->
-    <!-- <?define CL1310?> -->
-    <!-- <?define CL1400?> -->
-    <?define CL1600?>
-
     <!-- At most one of the following could be defined and must correspond
          to the type of build performed. -->
     <!--<?define Release?>-->
