@@ -11,8 +11,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                name: [linux-clang, linux-clang-openssl, linux-gcc]
+                name: [macos-clang, linux-clang, linux-clang-openssl, linux-gcc]
                 include:
+                    - name: macos-clang
+                      os: macos-latest
+                      compiler: clang
+                      configureopts: CPPFLAGS=-I/usr/local/opt/openssl/include LDFLAGS=-L/usr/local/opt/openssl/lib
+                      env:
+                        PATH: /usr/local/opt/bison/bin:/usr/local/opt/tcl-tk/bin:$PATH
                     - name: linux-clang
                       os: ubuntu-18.04
                       compiler: clang
@@ -29,6 +35,11 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v1
+            - name: macOS setup
+              if: matrix.os == 'macos-latest'
+              run: |
+                brew update
+                brew install bison openldap openssl deja-gnu automake tcl-tk
             - name: Linux setup
               if: startsWith(matrix.os, 'ubuntu')
               run: |
@@ -45,10 +56,16 @@ jobs:
                 autoreconf
                 ./configure --enable-maintainer-mode --with-ldap $CONFIGURE_OPTS --prefix=$HOME/inst
                 make $MAKEVARS
-                make check
                 make install
+                make check
             - name: Display skipped tests
               run: cat src/skiptests
+            - name: API ccache test script
+              if: matrix.os == 'macos-latest'
+              run: |
+                cd src
+                make runenv.py
+                PYTHONPATH=util python3 t_apicache.py -v
             - name: Check for files unexpectedly not removed by make distclean
               run: |
                 cd src
