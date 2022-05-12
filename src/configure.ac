@@ -1417,12 +1417,6 @@ dnl using AC_DEFINE within the body.
   # Use the normal default for macOS 10.6 (Darwin 10) and prior.
   OSX=osx
   ;;
-*-*-darwin1[0-9].*)
-  # macOS 10.7 through 10.15 (Darwin 11 through 19) natively use a KCM
-  # collection by default.
-  OSX=osx
-  macos_defccname=KCM:
-  ;;
 *-*-darwin*)
   # macOS 11 (Darwin 20) and later use an xpc-based cache type called
   # XCACHE by default.  We can access this collection via a

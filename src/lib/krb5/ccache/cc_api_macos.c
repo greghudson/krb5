@@ -1,10 +1,10 @@
 /* -*- mode: c; c-basic-offset: 4; indent-tabs-mode: nil -*- */
 /*
  * This ccache module provides compatibility with the default native ccache
- * type for macOS 11 and later (XCACHE), by linking against the native Kerberos
- * framework and calling the CCAPI stubs.  Due to workarounds for specific
- * behaviors of the CCAPI stubs, this implementation is separate from the API
- * ccache implementation used on Windows.
+ * type for macOS, by linking against the native Kerberos framework and calling
+ * the CCAPI stubs.  Due to workarounds for specific behaviors of the CCAPI
+ * stubs, this implementation is separate from the API ccache implementation
+ * used on Windows.
  */
 
 #include "k5-int.h"
@@ -124,38 +124,51 @@ api_macos_get_name(krb5_context context, krb5_ccache ccache)
  * configuration.  So we have to implement just enough of the XCACHE client to
  * fetch the primary UUID.
  */
-static void
-get_primary_uuid(char out[37])
+static krb5_error_code
+get_primary_name(krb5_context context, char **name_out)
 {
+    krb5_error_code ret;
     xpc_connection_t conn = NULL;
     xpc_object_t request = NULL, reply = NULL;
     const uint8_t *uuid;
     uint64_t flags = XPC_CONNECTION_MACH_SERVICE_PRIVILEGED;
+    char uuidstr[37];
 
-    /* XCACHE uses this fixed string if the XPC calls fail for any reason. */
-    strlcpy(out, "11111111-71F2-48EB-94C4-7D7392E900E5", 37);
+    *name_out = NULL;
 
     conn = xpc_connection_create_mach_service("com.apple.GSSCred", NULL,
                                               flags);
-    if (conn == NULL)
+    if (conn == NULL) {
+        ret = ENOMEM;
         goto cleanup;
+    }
     xpc_connection_set_event_handler(conn, ^(xpc_object_t o){ ; });
     xpc_connection_resume(conn);
 
     request = xpc_dictionary_create(NULL, NULL, 0);
-    if (request == NULL)
+    if (request == NULL) {
+        ret = ENOMEM;
         goto cleanup;
+    }
     xpc_dictionary_set_string(request, "command", "default");
     xpc_dictionary_set_string(request, "mech", "kHEIMTypeKerberos");
 
     reply = xpc_connection_send_message_with_reply_sync(conn, request);
-    if (reply == NULL || xpc_get_type(reply) == XPC_TYPE_ERROR)
+    if (reply == NULL || xpc_get_type(reply) == XPC_TYPE_ERROR) {
+        /* This could be macOS 10 or earlier; try a KCM query. */
+        ret = k5_kcm_primary_name(context, name_out);
         goto cleanup;
+    }
 
     uuid = xpc_dictionary_get_uuid(reply, "default");
-    if (uuid == NULL)
+    if (uuid == NULL) {
+        ret = KRB5_CC_IO;
         goto cleanup;
-    uuid_unparse(uuid, out);
+    }
+    uuid_unparse(uuid, uuidstr);
+
+    *name_out = strdup(uuidstr);
+    ret = (*name_out == NULL) ? ENOMEM : 0;
 
 cleanup:
     if (request != NULL)
@@ -164,19 +177,25 @@ cleanup:
         xpc_release(reply);
     if (conn != NULL)
         xpc_connection_cancel(conn);
+    return ret;
 }
 
 static krb5_error_code
 api_macos_resolve(krb5_context context, krb5_ccache *cache_out,
                   const char *residual)
 {
-    char defuuid[37];
+    krb5_error_code ret;
+    char *primary = NULL;
 
     if (*residual == '\0') {
-        get_primary_uuid(defuuid);
-        residual = defuuid;
+        ret = get_primary_name(context, &primary);
+        if (ret)
+            return ret;
+        residual = primary;
     }
-    return make_cache(residual, NULL, cache_out);
+    ret = make_cache(residual, NULL, cache_out);
+    free(primary);
+    return ret;
 }
 
 static krb5_error_code
@@ -505,7 +524,6 @@ api_macos_ptcursor_next(krb5_context context, krb5_cc_ptcursor ptcursor,
     uint32_t err;
     struct api_macos_ptcursor *apt = ptcursor->data;
     const char *defname, *defresidual;
-    char defuuid[37];
     cc_ccache_t cache;
     cc_string_t residual;
     struct api_macos_cache_data *data;
@@ -538,11 +556,10 @@ api_macos_ptcursor_next(krb5_context context, krb5_cc_ptcursor ptcursor,
             return KRB5_FCC_INTERNAL;
 
         /* Yield the primary cache first if it exists. */
-        get_primary_uuid(defuuid);
-        apt->primary = strdup(defuuid);
-        if (apt->primary == NULL)
-            return ENOMEM;
-        ret = make_open_cache(defuuid, cache_out);
+        ret = get_primary_name(context, &apt->primary);
+        if (ret)
+            return ret;
+        ret = make_open_cache(apt->primary, cache_out);
         if (ret || *cache_out != NULL)
             return ret;
     }

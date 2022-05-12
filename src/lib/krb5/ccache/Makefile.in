@@ -4,7 +4,7 @@ SUBDIRS = # ccapi
 WINSUBDIRS = ccapi
 ##WIN32##DEFINES = -DUSE_CCAPI
 
-LOCALINCLUDES = -I$(srcdir)$(S)ccapi
+LOCALINCLUDES = -I$(srcdir)$(S)ccapi -I$(srcdir) -I.
 
 ##DOS##BUILDTOP = ..\..\..
 ##DOS##PREFIXDIR=ccache
