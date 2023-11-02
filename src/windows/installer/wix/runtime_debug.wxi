@@ -1,5 +1,4 @@
-﻿<?xml version="1.0"?>
-<Include>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <?ifdef Debug?>
     <?ifdef CL1310 ?>
         <ComponentRef Id="cmf_runtime_debug1310" />

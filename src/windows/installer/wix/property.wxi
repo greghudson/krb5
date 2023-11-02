@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+﻿<!--
 
   Copyright (C) 2004, 2005, 2006 by the Massachusetts Institute of Technology.
   Copyright (C) 2007 Secure Endpoints Inc.
@@ -25,31 +24,31 @@
   or implied warranty.
   
   -->
-<Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
     <!-- Important:  This product should only be installed in all-user mode -->
-    <Property Id="ALLUSERS">1</Property>
+    <Property Id="ALLUSERS" Value="1" />
 
-    <Property Id="LEASHAUTOINIT" Admin="yes" Secure="yes">-autoinit</Property>
-    <Property Id="LEASHAUTOSTART" Admin="yes" Secure="yes">1</Property>
+    <Property Id="LEASHAUTOINIT" Admin="yes" Secure="yes" Value="-autoinit" />
+    <Property Id="LEASHAUTOSTART" Admin="yes" Secure="yes" Value="1" />
     
-    <Property Id="ARPCOMMENTS">$(var.ARPComments)</Property>
-    <Property Id="ARPCONTACT">kerberos@mit.edu</Property>
-    <Property Id="ARPURLINFOABOUT">https://web.mit.edu/kerberos</Property>
-    <Property Id="ARPHELPLINK">https://web.mit.edu/kerberos</Property>
-    <Property Id="INSTALLLEVEL">50</Property>
-    <Property Id="ComponentDownload">https://web.mit.edu/kerberos</Property>
+    <Property Id="ARPCOMMENTS" Value="$(var.ARPComments)" />
+    <Property Id="ARPCONTACT" Value="kerberos@mit.edu" />
+    <Property Id="ARPURLINFOABOUT" Value="https://web.mit.edu/kerberos" />
+    <Property Id="ARPHELPLINK" Value="https://web.mit.edu/kerberos" />
+    <Property Id="INSTALLLEVEL" Value="50" />
+    <Property Id="ComponentDownload" Value="https://web.mit.edu/kerberos" />
 
     <Property Id="UPGRADENSIS">
-        <RegistrySearch Win64="no" Id="regsrch_NSIS" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\Kerberos for Windows" Name="UninstallString" Type="raw"/>
+        <RegistrySearch Id="regsrch_NSIS" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\Kerberos for Windows" Name="UninstallString" Type="raw" Bitness="always32" />
     </Property>
     
     <Property Id="NSISVERSION">
-        <RegistrySearch Win64="no" Id="regsrch_NSISV" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\Kerberos for Windows" Name="DisplayVersion" Type="raw" />
+        <RegistrySearch Id="regsrch_NSISV" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\Kerberos for Windows" Name="DisplayVersion" Type="raw" Bitness="always32" />
     </Property>
 
-    <Property Id="CantRemoveNSISError">!(loc.CantRemoveNSIS)</Property>
-    <Property Id="NoIE501Error">!(loc.IE501Required)</Property>
+    <Property Id="CantRemoveNSISError" Value="!(loc.CantRemoveNSIS)" />
+    <Property Id="NoIE501Error" Value="!(loc.IE501Required)" />
 
     <!--  Additional properties relating to the UI are in the appropriate UI.wxi file -->
     
@@ -58,31 +57,31 @@
          variable value is the empty string (""), then the properties will
          not be defined. -->
 <?ifdef UseDefaultProperties?>
-    <Property Id="LEASHCREATEMISSINGCONFIG" Admin="yes" Secure="yes">$(var.LeashCreateMissingConfig)</Property>
-    <Property Id="LEASHAUTORENEWTICKETS" Admin="yes" Secure="yes">$(var.LeashAutoRenewTickets)</Property>
-    <Property Id="LEASHLIFETIME" Admin="yes" Secure="yes">$(var.LeashLifetime)</Property>
-    <Property Id="LEASHRENEWTILL" Admin="yes" Secure="yes">$(var.LeashRenewTill)</Property>
-    <Property Id="LEASHRENEWABLE" Admin="yes" Secure="yes">$(var.LeashRenewable)</Property>
-    <Property Id="LEASHFORWARDABLE" Admin="yes" Secure="yes">$(var.LeashForwardable)</Property>
-    <Property Id="LEASHNOADDRESSES" Admin="yes" Secure="yes">$(var.LeashNoAddresses)</Property>
-    <Property Id="LEASHPROXIABLE" Admin="yes" Secure="yes">$(var.LeashProxiable)</Property>
-    <Property Id="LEASHPUBLICIP" Admin="yes" Secure="yes">$(var.LeashPublicIp)</Property>
-    <Property Id="LEASHHIDEKINITOPTIONS" Admin="yes" Secure="yes">$(var.LeashHideKinitOptions)</Property>
-    <Property Id="LEASHLIFEMIN" Admin="yes" Secure="yes">$(var.LeashLifeMin)</Property>
-    <Property Id="LEASHLIFEMAX" Admin="yes" Secure="yes">$(var.LeashLifeMax)</Property>
-    <Property Id="LEASHRENEWMIN" Admin="yes" Secure="yes">$(var.LeashRenewMin)</Property>
-    <Property Id="LEASHRENEWMAX" Admin="yes" Secure="yes">$(var.LeashRenewMax)</Property>
-    <Property Id="LEASHUPPERCASEREALM" Admin="yes" Secure="yes">$(var.LeashUppercaseRealm)</Property>
-    <Property Id="LEASHTIMEHOST" Admin="yes" Secure="yes">$(var.LeashTimeHost)</Property>
-    <Property Id="LEASHPRESERVEKINITOPTIONS" Admin="yes" Secure="yes">$(var.LeashPreserveKinitOptions)</Property>
-    <Property Id="KRB5CONFIG" Admin="yes" Secure="yes">$(var.Krb5Config)</Property>
-    <Property Id="KRB5CCNAME" Admin="yes" Secure="yes">$(var.Krb5CcName)</Property>
-    <Property Id="KRB5PRESERVEIDENTITY" Admin="yes" Secure="yes">$(var.Krb5PreserveIdentity)</Property>
+    <Property Id="LEASHCREATEMISSINGCONFIG" Admin="yes" Secure="yes" Value="$(var.LeashCreateMissingConfig)" />
+    <Property Id="LEASHAUTORENEWTICKETS" Admin="yes" Secure="yes" Value="$(var.LeashAutoRenewTickets)" />
+    <Property Id="LEASHLIFETIME" Admin="yes" Secure="yes" Value="$(var.LeashLifetime)" />
+    <Property Id="LEASHRENEWTILL" Admin="yes" Secure="yes" Value="$(var.LeashRenewTill)" />
+    <Property Id="LEASHRENEWABLE" Admin="yes" Secure="yes" Value="$(var.LeashRenewable)" />
+    <Property Id="LEASHFORWARDABLE" Admin="yes" Secure="yes" Value="$(var.LeashForwardable)" />
+    <Property Id="LEASHNOADDRESSES" Admin="yes" Secure="yes" Value="$(var.LeashNoAddresses)" />
+    <Property Id="LEASHPROXIABLE" Admin="yes" Secure="yes" Value="$(var.LeashProxiable)" />
+    <Property Id="LEASHPUBLICIP" Admin="yes" Secure="yes" Value="$(var.LeashPublicIp)" />
+    <Property Id="LEASHHIDEKINITOPTIONS" Admin="yes" Secure="yes" Value="$(var.LeashHideKinitOptions)" />
+    <Property Id="LEASHLIFEMIN" Admin="yes" Secure="yes" Value="$(var.LeashLifeMin)" />
+    <Property Id="LEASHLIFEMAX" Admin="yes" Secure="yes" Value="$(var.LeashLifeMax)" />
+    <Property Id="LEASHRENEWMIN" Admin="yes" Secure="yes" Value="$(var.LeashRenewMin)" />
+    <Property Id="LEASHRENEWMAX" Admin="yes" Secure="yes" Value="$(var.LeashRenewMax)" />
+    <Property Id="LEASHUPPERCASEREALM" Admin="yes" Secure="yes" Value="$(var.LeashUppercaseRealm)" />
+    <Property Id="LEASHTIMEHOST" Admin="yes" Secure="yes" Value="$(var.LeashTimeHost)" />
+    <Property Id="LEASHPRESERVEKINITOPTIONS" Admin="yes" Secure="yes" Value="$(var.LeashPreserveKinitOptions)" />
+    <Property Id="KRB5CONFIG" Admin="yes" Secure="yes" Value="$(var.Krb5Config)" />
+    <Property Id="KRB5CCNAME" Admin="yes" Secure="yes" Value="$(var.Krb5CcName)" />
+    <Property Id="KRB5PRESERVEIDENTITY" Admin="yes" Secure="yes" Value="$(var.Krb5PreserveIdentity)" />
 <?endif?>
 <?ifdef UseLeash?>
-    <Property Id="USELEASH" Admin="yes" Secure="yes">$(var.UseLeash)</Property>
+    <Property Id="USELEASH" Admin="yes" Secure="yes" Value="$(var.UseLeash)" />
 <?endif?>
 <?ifdef UseNetIDMgr?>
-    <Property Id="USENETIDMGR" Admin="yes" Secure="yes">$(var.UseNetIDMgr)</Property>
+    <Property Id="USENETIDMGR" Admin="yes" Secure="yes" Value="$(var.UseNetIDMgr)" />
 <?endif?>
 </Include>

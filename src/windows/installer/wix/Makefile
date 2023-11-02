@@ -3,9 +3,7 @@
 LANG=1033
 
 # Program macros
-CANDLE=candle -nologo
-
-LIGHT=light -nologo
+WIX=wix
 
 CD=cd
 
@@ -49,15 +47,10 @@ WIXARCH = x64
 
 all: $(MSIFILE)
 
-$(OBJFILE): kfw.wxs $(WIXINCLUDES)
-	$(CANDLE) -arch $(WIXARCH) -out $@ kfw.wxs \
-		"-dDate=%DATE%" \
-		"-dTime=%TIME%" \
-		-dBuildLang=$(LANG)
-
-$(MSIFILE): $(OBJFILE) $(CUSTOMDLL)
-	$(LIGHT) -out $@ $(OBJFILE) \
-		-loc lang\strings_$(LANG).wxl -ext WixUtilExtension.dll
+$(MSIFILE): kfw.wxs $(WIXINCLUDES)
+	$(WIX) build -o $@ kfw.wxs \
+		-d "Date=%DATE%" -d "Time=%TIME%" -d "BuildLang=$(LANG)" \
+		-loc lang\strings_$(LANG).wxl
 
 $(CUSTOMDLL): custom\custom.cpp
 	$(CD) custom

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<Include>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
 <!-- Platform specific GUID's and other definitions -->
   <!-- Note that we need 32 bit dlls for both 32 and 64 bit platforms -->
   <?define cmf_comerr32_dll_guid="D8F455F9-E648-4C61-A69D-7116ADEC2DBB"?>
