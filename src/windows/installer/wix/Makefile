@@ -57,7 +57,7 @@ $(OBJFILE): kfw.wxs $(WIXINCLUDES)
 
 $(MSIFILE): $(OBJFILE) $(CUSTOMDLL)
 	$(LIGHT) -out $@ $(OBJFILE) \
-		-loc lang\strings_$(LANG).wxl -ext WixUtilExtension.dll
+		-loc lang\strings_$(LANG).wxl -ext WixUtilExtension -ext WixUIExtension -cultures:en-us
 
 $(CUSTOMDLL): custom\custom.cpp
 	$(CD) custom
