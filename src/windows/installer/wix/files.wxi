@@ -562,27 +562,21 @@
       <?endif?>
       <?if $(sys.BUILDARCH) = "x64" ?>
         <?ifndef Debug?>
-          <Merge Id="MSVCRT$(var.VCVer)MEM64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_CRT_x64.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFC_x64.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x64.msm"/>
-          <Merge Id="MSVCRT$(var.VCVer)MEM86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_CRT_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFC_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x86.msm"/>
         <?else?>
-          <Merge Id="MSVCRT$(var.VCVer)MEM64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugCRT_x64.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugMFC_x64.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL64" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x64.msm"/>
-          <Merge Id="MSVCRT$(var.VCVer)MEM86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugCRT_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugMFC_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x86.msm"/>
         <?endif?>
       <?else?>
         <?ifndef Debug?>
-          <Merge Id="MSVCRT$(var.VCVer)MEM86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_CRT_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFC_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x86.msm"/>
         <?else?>
-          <Merge Id="MSVCRT$(var.VCVer)MEM86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugCRT_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFC86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_DebugMFC_x86.msm"/>
           <Merge Id="MSVCRT$(var.VCVer)MFL86" DiskId="1" Language="0" SourceFile="$(var.MM)\Microsoft_VC$(var.VCVer)_MFCLOC_x86.msm"/>
         <?endif?>
