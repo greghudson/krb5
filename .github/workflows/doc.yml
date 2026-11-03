@@ -27,8 +27,8 @@ jobs:
             - name: Linux setup
               run: |
                 sudo apt-get update -qq
-                sudo apt-get install -y doxygen python3-lxml python3-pip
-                pip3 install Cheetah3 sphinx
+                sudo apt-get install -y doxygen python3-lxml python3-pip python3-cheetah
+                pip3 install sphinx
             - name: Build documentation
               run: |
                 cd src/doc
